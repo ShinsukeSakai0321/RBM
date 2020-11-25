@@ -1,7 +1,9 @@
-from setuptools import setup,find_packages
+from setuptools import setup,find_packages
 setup(
-    name="RBM",
-    version="0.1",
-    packages=find_packages("src"),
-    package_dir={"":"src"}
+    name="RBM",
+    version="1.0.0",
+    author="Shinsuke Sakai",
+    url="https://github/ShinsukeSakai0321/RBM.git",
+    packages=find_packages("src"),
+    package_dir={"":"src"}
 )
