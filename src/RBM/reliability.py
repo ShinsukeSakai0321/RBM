@@ -38,10 +38,20 @@ def sv_alpha(svm,gamma,x0):
 def g(x,svm):    # svmでのgのsurrogate関数
     var_num=len(x)
     return svm.decision_function(x.reshape(1,var_num))[0]
-def RackwitzFiessler(x,svm,gamma):
-    nmax=100 #繰り返し数上限
-    eps=0.001 #収束規準
-    b0=10.0   #beta値初期値
+def RackwitzFiessler(x,svm,gamma,nmax=100,eps=0.001,b0=10.0):
+    """
+    目的:初期点xからスタートし，Rackwitz Fiessler法により設計点を求める
+    入力:
+        x       初期点
+        svm     SVM解析の出力
+        gamma   SVM解析の際に用いたγ値
+        nmax    繰り返し数上限
+        eps     収束規準
+        b0      beta値初期値
+    出力:dp,beta
+        dp      設計点
+        beta    信頼性指標
+    """
     for i in range(nmax):
         alpha,nabla=sv_alpha(svm,gamma,x)
         if(np.isnan(alpha[0])):
