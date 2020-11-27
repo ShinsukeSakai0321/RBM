@@ -14,6 +14,16 @@ def UnderSampling4(XX,DP,rpick,ratio):
 #サポートベクターマシンα，偏微分ベクトルの計算
 import math
 def sv_alpha(svm,gamma,x0):
+    """
+    目的:座標点x0の感度係数と，微分値を計算する
+    入力:
+        svm SVM解析の出力
+        gamma   SVM解析の際に用いたγ値
+        x0      評価点の座標
+    出力:alpha,deriv
+        alpha   感度ベクトル
+        deriv   微分値ベクトル
+    """
     #derivative
     var_num=len(x0)
     coef=svm.dual_coef_
@@ -36,6 +46,14 @@ def sv_alpha(svm,gamma,x0):
     # deriv: 各変数方向の微分値
     return alpha,deriv
 def g(x,svm):    # svmでのgのsurrogate関数
+    """
+    目的:SVMの解析結果から，x点のdecision_functionの値を返す
+    入力:
+        x   評価点
+        svm SVM解析の出力
+    出力:
+        decisio_functionの値
+    """
     var_num=len(x)
     return svm.decision_function(x.reshape(1,var_num))[0]
 def RackwitzFiessler(x,svm,gamma,nmax=100,eps=0.001,b0=10.0):
@@ -67,7 +85,16 @@ def RackwitzFiessler(x,svm,gamma,nmax=100,eps=0.001,b0=10.0):
     dp=x
     return dp,beta
 def SV_RF(sv,svm,gamma):
-    #全SV点を出発点とするRFを実施し、最小βを与える点を設計点と確定
+    """
+    目的:全SV点を出発点とするRFを実施し、最小βを与える点を設計点と確定
+    入力:
+        sv  SVM解析の結果得られるsv点
+        svm     SVM解析の出力
+        gamma   SVM解析の際に用いたγ値
+    出力:dp,beta
+        dp      原点から最短の設計点
+        beta　  β値
+    """
     beta=np.zeros(len(sv))
     for i in range(len(sv)):
         dp,beta[i]=RackwitzFiessler(sv[i],svm,gamma)
@@ -76,6 +103,18 @@ def SV_RF(sv,svm,gamma):
 from pyDOE import *
 from scipy.stats.distributions import norm
 def generate_datablock3(n,Mr,Sr,Ms,Ss,k):
+    """
+    目的:RSモデルについて，LHS+USによるサンプル点の発生
+    入力:
+        n   発生点数
+        Mr  強度平均値
+        Sr  強度標準偏差
+        Ms  荷重平均値
+        Ss  荷重標準偏差
+        k   USの領域設定のための係数
+    出力:
+        df  列名['x1','x2','t']のデータフレーム
+    """
     #Latin Hypercube Sampling
     design = lhs(2, samples=n,criterion='maximin')
     u=design
