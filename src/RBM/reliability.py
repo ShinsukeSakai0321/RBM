@@ -1,3 +1,7 @@
+"""
+目的:SVMを利用した信頼性評価モジュール
+注意点:モジュール利用前に，SVM解析を終了していること
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 from pandas import DataFrame
