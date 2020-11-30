@@ -211,8 +211,8 @@ def GetData(sel='A'):
         教師用サンプルデータ(DataFrame形式)
     """
     if sel=='A':
-        df=pd.read_csv('./data/PlantA_Data.csv')
+        df=pd.read_csv('data/PlantA_Data.csv')
     else:
-        df=pd.read_csv('./data/PlantB_Data.csv')
+        df=pd.read_csv('data/PlantB_Data.csv')
     return df
                
