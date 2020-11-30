@@ -201,4 +201,18 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
+def GetData(sel='A'):
+    """
+    目的:教師用サンプルデータの読み取り
+    入力:
+        sel='A' プラントAデータ
+        sel='B' プラントBデータ
+    出力:
+        教師用サンプルデータ(DataFrame形式)
+    """
+    if sel=='A':
+        df=pd.read_csv('/data/PlantA_Data.csv')
+    else:
+        df=pd.read_csv('/data/PlantB_Data.csv')
+    return df
                
