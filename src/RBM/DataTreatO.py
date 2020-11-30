@@ -201,6 +201,7 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
+import OpenSSL
 def GetData(sel='A'):
     """
     目的:教師用サンプルデータの読み取り
@@ -210,9 +211,10 @@ def GetData(sel='A'):
     出力:
         教師用サンプルデータ(DataFrame形式)
     """
+    path=os.getcwd()
     if sel=='A':
-        df=pd.read_csv('PlantA_Data.csv')
+        df=pd.read_csv(path+'data/PlantA_Data.csv')
     else:
-        df=pd.read_csv('PlantB_Data.csv')
+        df=pd.read_csv(path+'data/PlantB_Data.csv')
     return df
                
