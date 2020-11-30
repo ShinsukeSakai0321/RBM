@@ -201,7 +201,7 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
-import OpenSSL
+import os
 def GetData(sel='A'):
     """
     目的:教師用サンプルデータの読み取り
