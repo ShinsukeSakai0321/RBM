@@ -6,5 +6,6 @@ setup(
     url="https://github/ShinsukeSakai0321/RBM.git",
     packages=find_packages("src"),
     package_dir={"":"src"},
-    package_data={'RBM':[data/'*.csv']}
+    package_data={'':['*.csv']},
+    include_package_data=True,
 )
