@@ -2,6 +2,7 @@
   UniPlannerデータをAI用に加工する
   GitLabでのソース管理用
 """
+from os.path import dirname, exists, expanduser, isdir, join, splitext
 import pandas as pd
 import numpy as np
 from pandas import DataFrame
