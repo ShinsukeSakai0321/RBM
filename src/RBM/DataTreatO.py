@@ -2,6 +2,7 @@
   UniPlannerデータをAI用に加工する
   GitLabでのソース管理用
 """
+import os
 import pandas as pd
 import numpy as np
 from pandas import DataFrame
@@ -201,7 +202,6 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
-import os
 def GetData(sel='A'):
     """
     目的:教師用サンプルデータの読み取り
