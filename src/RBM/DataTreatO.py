@@ -2,7 +2,6 @@
   UniPlannerデータをAI用に加工する
   GitLabでのソース管理用
 """
-import os
 import pandas as pd
 import numpy as np
 from pandas import DataFrame
@@ -211,10 +210,11 @@ def GetData(sel='A'):
     出力:
         教師用サンプルデータ(DataFrame形式)
     """
-    path=os.getcwd()
+    base_dir = join(dirname(__file__), 'data/')
     if sel=='A':
-        df=pd.read_csv(path+'data/PlantA_Data.csv')
+        data_filename = join(base_dir, 'PlantA_Data.csv')
     else:
-        df=pd.read_csv(path+'data/PlantB_Data.csv')
+        data_filename = join(base_dir, 'PlantB_Data.csv')
+    df=pd.read_csv(data_filename)
     return df
                
