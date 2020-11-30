@@ -1,0 +1,116 @@
+﻿プラントID No,PlantID,-1
+プラントコード名,PlantCode,-1
+プラント名称,PlantName,-1
+定検周期(年),Inspection,-1
+機器ID No.,EquipNo,-1
+機器コード名,EquipCode,-1
+機器名称,EquipName,-1
+部位ID No.,PartID,-1
+部位コード名,PartName,-1
+運用開始日(年月日),operDate,-1
+前回定検日(年月日),prevDate,-1
+リスク評価年,riskDate,-1
+機器の分類,equipClass,-1
+部位名称,part,-1
+機器使用開始日または更新日,useDate,-1
+初期肉厚[mm],initialT,0
+腐食代[mm],corrAllowance,0
+最小肉厚[mm],minThick,0
+前回計測肉厚[mm],preThick,0
+前回計測日,prevMDate,-1
+減肉形態(全面減肉 or 局部減肉),MlossClass,1
+注入/混合箇所の有無,MixPos,1
+滞留部の有無,CongPos,1
+炭化水素のﾀｲﾌﾟ,HydroC,1
+水溶液中の不純物の量(多いor少ない),impurity,-1
+"サワーウォーター腐食の腐食速度の算出方法(""NH4HS[%]""もしくは""Kp値"")",SourWater,1
+「減肉：アミン腐食」用アミンの種類,MLAmine,1
+冷却方式の種類,Cooling,-1
+溶解固型物[mg/L] (50-400 or 401-1000),Dsolid,-1
+エロージョン・コロージョン用の流れの種類,EroCorrFlu,-1
+エロージョン・コロージョン用、過去の損傷事例の有無,EroCorrFact,-1
+材料のタイプ,Material,1
+使用運転時間(使用開始～前回検査) [Hrs],OperHour,1
+将来予想運転時間 [Hrs/year],FutureOper,1
+プロセス最高運転温度[℃],ProcessTemp,0
+流速,FluidVel,0
+S[wt%],Sulfer,-1
+HSAS(熱安定アミン塩)濃度[wtppm],HSAS,1
+NH4HS[wt%],NH4HS,1
+Kp値,Kp,-1
+H2S[mol%],H2S,1
+フッ酸溶液[wt%],HydroF,-1
+アミン濃度[wt%],AmineDens,1
+酸濃度[wt%],AcidDens,-1
+TAN(全酸価)[mg KOG/g],TAN,-1
+酸性ガス負荷[酸性ガスmol/活性アミンmol],AcidGas,1
+CaCO3のCa[mg/L],CaCO3Ca,-1
+CaCO3のMOA(Methyl Orange Alkalinity)[mg/L],CaCO3MOA,-1
+クラッディングの有無,Cladding,1
+酸素または酸化剤の有無,Oxide,1
+溶存酸素濃度が8ppm以上か?,DO,-1
+減肉のオンラインモニタリング,MLMonit,1
+ライニングに対するOn-Line Monitoringの有無,LiningMonit,-1
+ライニングの設置日,LiningDate,-1
+ライニングの前回検査日,LiningPreDate,-1
+ライニングの次回検査日,LiningNextDate,-1
+ライニングの次回交換日,LiningNextRep,-1
+「応力腐食割れ：アミンSCC」用アミンの種類,SCCAmine,1
+ステンレス鋼種類,Stainless,1
+材料の熱履歴,HeatHistory,1
+過去にSCCが発生したか（損傷事例なし、損傷事例あり）,PastSCC,1
+pH,pH,0
+Cl[ppm],Cl,0
+金属表面温度[℃],MetalTemp,0
+NAOH[wt],NAOH,-1
+H2S濃度[ppm],H2SDens,0
+鋼板のS含有量[wt%],SteelS,0
+硬さの最大値[HBW],MaxH,0
+ヒートトレース施工の有無,HeatTrace,1
+水洗前にスチームパージ実施の有無,SteamPurge,1
+シアン化物イオンの存在有無,CyanideIon,1
+継目無鋼管製の有無,Seamless,1
+NACE RP0170に従った停止期間中の保護対策の実施有無,NACERP0170,1
+水素プローブのオンラインモニタリングの有無,OxygenProbe,1
+主要プロセス変数のオンラインモニタリングの有無,MainProcess,1
+外面最高運転温度[℃],OuterMaxTemp,-1
+外面前回塗装日,paintDate,-1
+HTHA評価での材料種類,HTHA,1
+水素分圧[Mpa],PPHydro,0
+高温環境での使用温度[℃],HighTemp,0
+"多量のトランプエレメント(As, Sb, Sn, P)を含んでいる可能性があるか",TrampElement,-1
+過去に高温水素浸食が発生したかどうか,H2AttackQ,1
+衝撃試験免除曲線,Impact,-1
+σ相の量,Sigma,-1
+設計圧力近くへの圧力上昇と装置の温度低下が同時に起こることを防止する制御があるか,DesignPressure,1
+応力除去焼きなましの有無,Annealing,1
+装置が何年間も最低温度に曝されて問題なかった、または、その装置が披露やSCCの環境にないか,MinTemp,1
+Brittle 板厚,Brittle,-1
+管理温度[℃],ControlTemp,-1
+設計温度[℃],DesignTemp,-1
+運転温度[℃],OperTemp,-1
+流体の沸点[℃],Boiling,-1
+衝撃試験温度[℃],ImpactTest,-1
+衝撃試験免除温度[℃],ImpactTemp,-1
+指定されたMDMT,MDMT,-1
+既知の遷移温度[℃],TransitionT,-1
+遷移温度は既知か,TransitionKnown,-1
+Jファクター値,Jfactor,-1
+Si[Wt%],Si,-1
+P[Wt%],P,-1
+Mn[Wt%],Mn,-1
+Sn[Wt%],Sn,-1
+過去の疲労破損,PastFatigue,1
+可視的・可聴的振動,Vibration,1
+振動時間,VibDuration,1
+15[m]以内に接続している周期的外力の源,VibSource,1
+適用された対策の種類,Measure,1
+15[m]以内の範囲の複雑度,Complexity,1
+ジョイントや枝管の設計,Joint,1
+配管の状態,Condition,1
+2NPS未満の枝管の有無,BranchPipe,1
+P2NPS,P2NPS,-1
+炉管クリープに関するオンラインモニタリングの有無,CreepMonitoring,-1
+内圧 [kPa],Pressure,-1
+外径[mm],Diameter,-1
+炭素析出物の有無,CPrecipitate,-1

@@ -1,0 +1,115 @@
+﻿プラントID No,PlantID,-1
+プラントコード名,param1,-1
+プラント名称,param2,-1
+運用開始日(年月日),useDate,-1
+前回定検日(年月日),param3,-1
+定検周期(年),param4,-1
+リスク評価年,riskDate,-1
+機器ID No.,param5,-1
+機器コード名,param6,-1
+機器名称,param7,-1
+機器の分類,param8,-1
+部位ID No.,param9,-1
+部位コード名,param10,-1
+部位名称,param11,-1
+機器使用開始日または更新日,param12,-1
+初期肉厚[mm],InitialT,0
+腐食代[mm],CorrDepth,0
+最小肉厚[mm],minThick,0
+前回計測肉厚[mm],param13,-1
+前回計測日,param14,-1
+減肉形態(全面減肉 or 局部減肉),Shape,1
+注入/混合箇所の有無,Infusion,1
+滞留部の有無,Congestion,1
+炭化水素のﾀｲﾌﾟ,HydroCarbon,1
+水溶液中の不純物の量(多いor少ない),param15,-1
+"サワーウォーター腐食の腐食速度の算出方法(""NH4HS[%]""もしくは""Kp値"")",param16,-1
+冷却方式の種類,param18,-1
+溶解固型物[mg/L] (50-400 or 401-1000),param19,-1
+エロージョン・コロージョン用の流れの種類,param20,-1
+エロージョン・コロージョン用、過去の損傷事例の有無,param21,-1
+材料のタイプ,param22,-1
+使用運転時間(使用開始～前回検査) [Hrs],param23,-1
+将来予想運転時間 [Hrs/year],param24,-1
+プロセス最高運転温度[℃],processTemp,0
+流速,param25,-1
+S[wt%],param26,-1
+HSAS(熱安定アミン塩)濃度[wtppm],param27,-1
+NH4HS[wt%],param28,-1
+Kp値,param29,-1
+H2S[mol%],param30,-1
+フッ酸溶液[wt%],param31,-1
+アミン濃度[wt%],param32,-1
+酸濃度[wt%],param33,-1
+TAN(全酸価)[mg KOG/g],param34,-1
+酸性ガス負荷[酸性ガスmol/活性アミンmol],param35,-1
+CaCO3のCa[mg/L],param36,-1
+CaCO3のMOA(Methyl Orange Alkalinity)[mg/L],param37,-1
+クラッディングの有無,cladding,1
+酸素または酸化剤の有無,param38,-1
+溶存酸素濃度が8ppm以上か?,param39,-1
+減肉のオンラインモニタリング,lossMonit,1
+ライニングに対するOn-Line Monitoringの有無,param40,-1
+ライニングの設置日,param41,-1
+ライニングの前回検査日,param42,-1
+ライニングの次回検査日,param43,-1
+ライニングの次回交換日,param44,-1
+アミンの種類,param45,-1
+ステンレス鋼種類,param46,-1
+材料の熱履歴,param47,-1
+過去にSCCが発生したか（損傷事例なし、損傷事例あり）,param48,-1
+pH,param49,-1
+Cl[ppm],param50,-1
+金属表面温度[℃],param51,-1
+NAOH[wt],param52,-1
+H2S濃度[ppm],param53,-1
+鋼板のS含有量[wt%],param54,-1
+硬さの最大値[HBW],param55,-1
+ヒートトレース施工の有無,param56,-1
+水洗前にスチームパージ実施の有無,param57,-1
+シアン化物イオンの存在有無,param58,-1
+継目無鋼管製の有無,param59,-1
+NACE RP0170に従った停止期間中の保護対策の実施有無,param60,-1
+水素プローブのオンラインモニタリングの有無,param61,-1
+主要プロセス変数のオンラインモニタリングの有無,param62,-1
+外面最高運転温度[℃],param63,-1
+外面前回塗装日,param64,-1
+HTHA評価での材料種類,param65,-1
+水素分圧[Mpa],param66,-1
+高温環境での使用温度[℃],param67,-1
+"多量のトランプエレメント(As, Sb, Sn, P)を含んでいる可能性があるか",param68,-1
+過去に高温水素浸食が発生したかどうか,param69,-1
+衝撃試験免除曲線,param70,-1
+σ相の量,param71,-1
+設計圧力近くへの圧力上昇と装置の温度低下が同時に起こることを防止する制御があるか,param72,-1
+応力除去焼きなましの有無,param73,-1
+装置が何年間も最低温度に曝されて問題なかった、または、その装置が披露やSCCの環境にないか,param74,-1
+Brittle 板厚,param75,-1
+管理温度[℃],param76,-1
+設計温度[℃],param77,-1
+運転温度[℃],param78,-1
+流体の沸点[℃],param79,-1
+衝撃試験温度[℃],param80,-1
+衝撃試験免除温度[℃],param81,-1
+指定されたMDMT,param82,-1
+既知の遷移温度[℃],param83,-1
+遷移温度は既知か,param84,-1
+Jファクター値,param85,-1
+Si[Wt%],param86,-1
+P[Wt%],param87,-1
+Mn[Wt%],param88,-1
+Sn[Wt%],param89,-1
+過去の疲労破損,pastFatigue,1
+可視的・可聴的振動,Visible,1
+振動時間,vibDuration,1
+15[m]以内に接続している周期的外力の源,Source,1
+適用された対策の種類,Measure,1
+15[m]以内の範囲の複雑度,Complexity,1
+ジョイントや枝管の設計,Joint,1
+配管の状態,Condition,1
+2 NPS未満の枝管の有無,BranchPipe,1
+炉管材料温度は計測値もしくは推定値のどちらを使用するか,param90,-1
+炉管クリープに関するオンラインモニタリングの有無,param91,-1
+内圧 [kPa],param92,-1
+外径[mm],param93,-1
+炭素析出物の有無,param94,-1

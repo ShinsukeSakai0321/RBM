@@ -208,14 +208,20 @@ def GetData(sel='A'):
     入力:
         sel='A' プラントAデータ
         sel='B' プラントBデータ
-    出力:
-        教師用サンプルデータ(DataFrame形式)
+    出力:df,rename_term,rename_damage
+        df              教師用サンプルデータ(DataFrame形式)
+        rename_term     項目名変更テーブル
+        rename_damage   損傷機構名変更テーブル 
     """
     base_dir = join(dirname(__file__), 'data/')
     if sel=='A':
         data_filename = join(base_dir, 'PlantA_Data.csv')
+        RenameTerm = join(base_dir, 'rename_termA.csv')
+        RenameDamage=join(base_dir, 'rename_damageA.csv')
     else:
         data_filename = join(base_dir, 'PlantB_Data.csv')
     df=pd.read_csv(data_filename)
-    return df
+    rename_term=pd.read_csv(RenameTerm,header=None,dtype=str)
+    rename_damage=pd.read_csv(RenameDamage,header=None,dtype=str)
+    return df,rename_term,rename_damage
                
