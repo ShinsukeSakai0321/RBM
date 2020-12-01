@@ -202,7 +202,7 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
-def GetData(sel='A'):
+def GetData(plant='A'):
     """
     目的:教師用サンプルデータの読み取り
     入力:
@@ -214,12 +214,14 @@ def GetData(sel='A'):
         rename_damage   損傷機構名変更テーブル 
     """
     base_dir = join(dirname(__file__), 'data/')
-    if sel=='A':
+    if plant=='A':
         data_filename = join(base_dir, 'PlantA_Data.csv')
         RenameTerm = join(base_dir, 'rename_termA.csv')
         RenameDamage=join(base_dir, 'rename_damageA.csv')
     else:
         data_filename = join(base_dir, 'PlantB_Data.csv')
+        RenameTerm = join(base_dir, 'rename_termB.csv')
+        RenameDamage=join(base_dir, 'rename_damageB.csv')
     df=pd.read_csv(data_filename)
     rename_term=pd.read_csv(RenameTerm,header=None,dtype=str)
     rename_damage=pd.read_csv(RenameDamage,header=None,dtype=str)
