@@ -226,4 +226,12 @@ def GetData(plant='A'):
     rename_term=pd.read_csv(RenameTerm,header=None,dtype=str)
     rename_damage=pd.read_csv(RenameDamage,header=None,dtype=str)
     return df,rename_term,rename_damage
-               
+
+from distutils.util import strtobool
+def str2bool(data):
+    """
+    目的:DataFrameのdata内の文字列の'True','False'をbool値のTrue,Falseに変換する
+    """
+    for i in range(len(data)):
+        data[data.columns.values[0]][i]=strtobool(data[data.columns.values[0]][i])
+        return              
