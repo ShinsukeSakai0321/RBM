@@ -19,6 +19,11 @@ class HL:
         self.Peak=[]
         self.halfR=[]
         self.halfM=[]
+    def SetPeak(self,peak):
+        """
+        目的:リストで与えられるピーク値列をself.Peakにセットする
+        """
+        self.Peak=peak
     def demo_data(self):
         """
         目的:
