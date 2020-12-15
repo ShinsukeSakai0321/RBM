@@ -1,0 +1,7 @@
+﻿External Corrosion,ExtCorr
+CUI,CUI
+Tank Bottom(Soil-Side) Corrosion,BottomCorr
+Internal Corrosion,IntCorr
+Crevice Corrosion / Pitting Corrosion / CLSCC,CLSCC
+Fatigue(cyclic loading),FatigueC
+Fatigue(Vibration),FatigueV

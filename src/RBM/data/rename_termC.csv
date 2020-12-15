@@ -1,0 +1,67 @@
+﻿プラントID No,PlantID,-1
+プラントコード名,PlantCode,-1
+プラント名称,PlantName,-1
+運用開始日(年月日),useDate,-1
+前回定検日(年月日),prevDate,-1
+定検周期(年),InsPeriod,-1
+リスク評価年(年月日),riskDate,-1
+流体種類,process,1
+タンク内径(m),innerD,0
+外気温(℃),OutsideTemp,0
+最大許容圧力 [kPa],MAWP,0
+タンク運転内圧 [kPa],WP,0
+最高運転液位[m],MaxLH,0
+最低運転液位[m],MinLH,0
+ダイクの長さ[m],Dike,0
+土壌の状態,Tsuchi,-1
+機器ID No.,EquipID,-1
+機器コード名,EquipCode,-1
+機器名称,equipment,-1
+機器の分類,equipClass,1
+部位ID No.,equipID,-1
+部位コード名,partCode,-1
+部位名称,part ,-1
+部位の分類,partClass,1
+タンク本体への貫通部位の有無,transfix,1
+機器使用開始日または更新日,startDate,-1
+外面最高運転温度[℃],outerTemp,0
+初期肉厚[mm],initialT,0
+腐食代[mm],corrAllowance,0
+最小肉厚[mm],minThick,0
+前回計測肉厚[mm],preThick,0
+前回計測日,preDate,-1
+Soil Resistivity [ohm-cm],SoilR,1
+Tank Pad,TankPad,1
+Soil Side Tank Drainage,Drainage,1
+Cathodic Protection,CathProt,1
+Tank Bottom Type,TbottomT,1
+Sea Water Spray for deluge,Spray,1
+異種金属接触(ステンレス鋼の面積：Asと炭素鋼の面積：Acの割合　As/Ac),ContactMetal,1
+Caoting Quality,CoatingQ,1
+Complexity,Complexity,1
+Insulation Condition,InsulationC,1
+Insulation Type,InsulationT,1
+雨仕舞い構造,Weathering,1
+外面前回塗装日,PrePaint,-1
+内面最高運転温度[℃],operTemp,0
+過去SCC事例の有無,pastSCC,1
+Anchor Straps or Other SS Fittings,StrapFitting,1
+Clppm,Clppm,1
+Anchor Strap温度[℃],StrapTemp,0
+過去に損傷があったAnchor Strap数量,NoStrapDam,1
+Anchor Strap合計数量,AnchorStrap,1
+Anchor Strap必要最小数量,AncStrapNo,1
+アニュラー板厚[mm],AnnularT,0
+疲労による過去のクラックの有無,FatigueCrack,1
+繰返し数[年],CyclicNo,1
+JSSC継手の疲労強度等級 B～H,JSSC,1
+Pipe or Fitting,PipeFitting,1
+振動疲労による過去のクラックの回数,vibCrack,1
+可視的・可聴的振動のレベル,vibLebel,1
+振動時間(１年辺りの週単位),vibNo,1
+15m以内にある周期的外力の源,vibSource,1
+適用された対策,Counter,1
+15m以内の配管複雑度,Complex,1
+ジョイントや枝管の設計,Joint,1
+配管の状態,Condition,1
+2NPS未満の枝管の有無,P2NPS,1

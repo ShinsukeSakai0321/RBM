@@ -218,10 +218,18 @@ def GetData(plant='A'):
         data_filename = join(base_dir, 'PlantA_Data.csv')
         RenameTerm = join(base_dir, 'rename_termA.csv')
         RenameDamage=join(base_dir, 'rename_damageA.csv')
-    else:
+    elif plant=='B':
         data_filename = join(base_dir, 'PlantB_Data.csv')
         RenameTerm = join(base_dir, 'rename_termB.csv')
         RenameDamage=join(base_dir, 'rename_damageB.csv')
+    elif plant=='C':
+        data_filename = join(base_dir, 'PlantC_Data.csv')
+        RenameTerm = join(base_dir, 'rename_termC.csv')
+        RenameDamage=join(base_dir, 'rename_damageC.csv')
+    elif plant=='D':
+        data_filename = join(base_dir, 'PlantD_Data.csv')
+        RenameTerm = join(base_dir, 'rename_termD.csv')
+        RenameDamage=join(base_dir, 'rename_damageD.csv')
     df=pd.read_csv(data_filename)
     rename_term=pd.read_csv(RenameTerm,header=None,dtype=str)
     rename_damage=pd.read_csv(RenameDamage,header=None,dtype=str)
