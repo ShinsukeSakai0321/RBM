@@ -24,9 +24,9 @@ class DataTreatO:
         if num<=26:
             return chr(64+num)
         elif num%26==0:
-            return num2alpha(num//26-1)+chr(90)
+            return self.num2alpha(num//26-1)+chr(90)
         else:
-            return num2alpha(num//26)+chr(64+num%26)
+            return self.num2alpha(num//26)+chr(64+num%26)
     def DamagePick(self,damage):
         """ 損傷データのうち，損傷がTrueとなるデータを含んだ損傷名リストを戻す
         　　旧バージョンでは引数，DamageData,RenameDamage
