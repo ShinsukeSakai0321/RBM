@@ -126,7 +126,7 @@ class DataTreatO:
         #DF->True or False
         dname=np.array(self.rename_damage.iloc[:,1]) #損傷名配列
         n_damage=len(dname)
-        threshold=2
+        threshold=1
         damage=DataFrame(np.zeros(num),columns=['damage'])
         df=df.join(damage)
         #
