@@ -90,7 +90,7 @@ class DataTreatO:
         Damage=DataFrame(aa,columns=[row_name])
         return Damage
 
-    def DataTreat(self):
+    def DataTreat(self,type='AI_S'):
         """ UniPlannerデータに対するデータ処理ルーチン
         """
         df=self.df
@@ -106,17 +106,19 @@ class DataTreatO:
         num=len(df)
         aa=np.zeros(num)
         jnum=0
-        for i in range(num):
-            if df.useDate[i]!='Null':  #Nullデータについてはとりあえず除外しておく
-                bb=dateutil.parser.parse(str(df.riskDate[i]))-dateutil.parser.parse(str(df.useDate[i]))
-                aa[i]=bb.days
-                jnum += 1
-        uMean=sum(aa)/jnum #Null以外の経過日数の平均値
-        for i in range(num):
-            if df.useDate[i]=='Null': #Nullデータは平均値に置き換える
-                aa[i]=uMean
-        useD=DataFrame(aa,columns=['useD']) 
-        df=df.join(useD)
+        ### 以下の処理は、AI_Sに対してのみ。AI_newには行わない2021.2.10
+        if type == 'AI_S':
+            for i in range(num):
+                if df.useDate[i]!='Null':  #Nullデータについてはとりあえず除外しておく
+                    bb=dateutil.parser.parse(str(df.riskDate[i]))-dateutil.parser.parse(str(df.useDate[i]))
+                    aa[i]=bb.days
+                    jnum += 1
+            uMean=sum(aa)/jnum #Null以外の経過日数の平均値
+            for i in range(num):
+                if df.useDate[i]=='Null': #Nullデータは平均値に置き換える
+                    aa[i]=uMean
+            useD=DataFrame(aa,columns=['useD']) 
+            df=df.join(useD)
         # 不要項目の削除
         for i in range(n_term):
             if self.rename_term.iloc[i,2] == '-1':
