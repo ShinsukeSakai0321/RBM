@@ -41,7 +41,7 @@ class PreAnal:
             dd=self.df[name[0]].value_counts()
             aa=dd.index
             aa_contents=sorted(aa)
-            cont=categorical_transformer.fit_transform(pd.DataFrame(df[name[0]]))
+            cont=categorical_transformer.fit_transform(pd.DataFrame(self.df[name[0]]))
             aa_index=[]
             for i in range(cont.shape[1]):
                 aa_index.append(name[0]+'_'+self.num2alpha(i+1))
