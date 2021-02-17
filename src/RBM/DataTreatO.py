@@ -13,10 +13,20 @@ from dateutil.relativedelta import relativedelta
 from sklearn import tree
 import pydotplus
 class DataTreatO:
-    def __init__(self,df,rename_term,rename_damage):
+    """
+    目的:
+        UniPlannerの入力データをAIに利用するためのデータ処理
+    引数:
+        df              オリジナルのUniPlannerデータ
+        rename_term     項目名の変換テーブル
+        rename_damage   損傷名の変換テーブル
+        type            'AI_S' or 'AI_new' デフォールト'AI_S'
+    """
+    def __init__(self,df,rename_term,rename_damage,type='AI_S'):
         self.df=df
         self.rename_term=rename_term
         self.rename_damage=rename_damage
+        self.type=type
     def num2alpha(self,num):
         """ 数字numのアルファベットへの変換
             num>=26のときはアルファベット2文字となる
@@ -90,7 +100,7 @@ class DataTreatO:
         Damage=DataFrame(aa,columns=[row_name])
         return Damage
 
-    def DataTreat(self,type='AI_S'):
+    def DataTreat(self):
         """ UniPlannerデータに対するデータ処理ルーチン
         """
         df=self.df
@@ -107,7 +117,7 @@ class DataTreatO:
         aa=np.zeros(num)
         jnum=0
         ### 以下の処理は、AI_Sに対してのみ。AI_newには行わない2021.2.10
-        if type == 'AI_S':
+        if self.type == 'AI_S':
             for i in range(num):
                 if df.useDate[i]!='Null':  #Nullデータについてはとりあえず除外しておく
                     bb=dateutil.parser.parse(str(df.riskDate[i]))-dateutil.parser.parse(str(df.useDate[i]))
@@ -126,7 +136,10 @@ class DataTreatO:
         #DF->True or False
         dname=np.array(self.rename_damage.iloc[:,1]) #損傷名配列
         n_damage=len(dname)
-        threshold=1
+        if self.type=='AI_S':
+            threshold=2
+        else:
+            threshold=1
         damage=DataFrame(np.zeros(num),columns=['damage'])
         df=df.join(damage)
         #

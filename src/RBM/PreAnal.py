@@ -38,7 +38,7 @@ class PreAnal:
         col_cat=[] #カテゴリー名のリスト
         self.data_cat=pd.DataFrame([]) #カテゴリーテーブル
         for name in zip(categorical_features):
-            dd=df[name[0]].value_counts()
+            dd=self.df[name[0]].value_counts()
             aa=dd.index
             aa_contents=sorted(aa)
             cont=categorical_transformer.fit_transform(pd.DataFrame(df[name[0]]))
