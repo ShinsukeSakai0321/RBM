@@ -63,4 +63,13 @@ class SensitivityAnal:
         for i in range(len(res)):
             if abs(res.iloc[i,1])>thres:
                 next_features.append(res.iloc[i,0])
-        return next_features
+        return next_features    
+    def PickTerm(self,Sout):
+        """
+        感度分析結果について，Soutのリストに与える項目の結果を
+        集約してDataFrameとして戻す
+        """
+        tt = pd.DataFrame(index=[])
+        for term in zip(Sout):
+            tt=tt.append(self.result[(self.result['categ']==term[0])])
+        return tt
