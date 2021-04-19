@@ -16,6 +16,9 @@ class DataTreatO:
     """
     目的:
         UniPlannerの入力データをAIに利用するためのデータ処理
+        このままでは、新規データに対して予測させる際に、カテゴリーデータ
+        に対して、困難が伴うことが判明。このため、新たにclass DataTreatNを
+        開発することとする
     引数:
         df              オリジナルのUniPlannerデータ
         rename_term     項目名の変換テーブル
