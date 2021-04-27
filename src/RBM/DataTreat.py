@@ -526,7 +526,7 @@ class DataTreatNew:
         num_term=len(dCol)
         dNew = pd.DataFrame(index=[], columns=self.colData)
         #全データとして0を代入
-        l=[0]*len(colData)
+        l=[0]*len(self.colData)
         dNew.loc[0]=l
         for i in range(num_term):
             dd=self.rename_term[self.rename_term.iloc[:,0]==dCol[i]]
