@@ -221,7 +221,7 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
-def GetData(plant='A'):
+def GetData(plant='T'):
     """
     目的:教師用サンプルデータの読み取り
     入力:
