@@ -227,6 +227,7 @@ def GetData(plant='A'):
     入力:
         sel='A' プラントAデータ
         sel='B' プラントBデータ
+        sel='T' 全データを結合したもの
     出力:df,rename_term,rename_damage
         df              教師用サンプルデータ(DataFrame形式)
         rename_term     項目名変更テーブル
@@ -249,6 +250,10 @@ def GetData(plant='A'):
         data_filename = join(base_dir, 'PlantD_Data.csv')
         RenameTerm = join(base_dir, 'rename_termD.csv')
         RenameDamage=join(base_dir, 'rename_damageD.csv')
+    elif plant=='T':
+        data_filename = join(base_dir, 'AI_format_work.csv')
+        RenameTerm = join(base_dir, 'rename_term.csv')
+        RenameDamage=join(base_dir, 'rename_damage.csv')
     df=pd.read_csv(data_filename)
     rename_term=pd.read_csv(RenameTerm,header=None,dtype=str)
     rename_damage=pd.read_csv(RenameDamage,header=None,dtype=str)
