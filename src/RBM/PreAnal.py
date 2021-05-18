@@ -78,3 +78,19 @@ class PreAnal:
         tt_cat=self.SetCateg(categorical_features)
         X=pd.concat([tt_num,tt_cat],axis=1)
         return X
+    def EvalNull(self,data,ratio): 
+        """
+        目的:　リストdataの中で、'Null'の比率がratio以上のときtrue
+                2021.5.18
+        """
+        return sum(data=='Null')/len(data)>ratio
+    def CutNull(self,categorical_features,ratio):
+        """
+        目的:　リストcategorical_featuresの中で、'Null'の比率がratio以上の項目を削除後、リストを返す
+                2021.5.18
+        """
+        cat=categorical_features.copy()
+        for categ in zip(categorical_features):
+            if self.EvalNull(self.df[categ[0]],ratio):
+                cat.remove(categ[0])
+        return cat
