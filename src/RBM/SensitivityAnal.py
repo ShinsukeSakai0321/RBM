@@ -88,7 +88,7 @@ class SensitivityAnal:
         for term in zip(Sout):
             tt=tt.append(self.result[(self.result['categ']==term[0])])
         return tt
-    def ModRes(result,contents):
+    def ModRes(self,result,contents):
         """
         感度分析結果resultに対して、項目名をcontentsから抽出し、resultに対して項目名'term'として追加して返す
         """
