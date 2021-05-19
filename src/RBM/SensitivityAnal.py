@@ -88,3 +88,14 @@ class SensitivityAnal:
         for term in zip(Sout):
             tt=tt.append(self.result[(self.result['categ']==term[0])])
         return tt
+    def ModRes(result,contents):
+        """
+        感度分析結果resultに対して、項目名をcontentsから抽出し、resultに対して項目名'term'として追加して返す
+        """
+        term=[]
+        resu=result.copy()
+        for i in range(len(result)):
+            aa=result['categ'][i][:2]
+            term.append(contents[(contents['C-1']==aa)].iloc[0,1])
+        resu['term']=term
+        return resu
