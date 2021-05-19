@@ -59,11 +59,26 @@ class SensitivityAnal:
     def GetBeta(self):
         return self.beta
     def Next(self,thres,res):
+        """
+        dataframe resの第一列目与えられる項目のうち、第二列目に与えられる感度がthres以上の項目を抽出し、リストとして返す
+        """
         next_features=[]
         for i in range(len(res)):
             if abs(res.iloc[i,1])>thres:
                 next_features.append(res.iloc[i,0])
-        return next_features    
+        return next_features
+    def NextTop(self,top,res):
+        """
+        dataframe resの第一列目与えられる項目のうち、第二列目に与えられる感度絶対値がtop番目までの項目を抽出し、リストとして返す
+        """
+        next_features=[]
+        aa=res.copy()
+        bb=abs(aa['sensitivity'])
+        aa['sensitivity']=bb
+        cc=aa.sort_values(by='sensitivity', ascending=False)
+        for i in range(top):
+            next_features.append(cc.iloc[i,0])
+        return next_features     
     def PickTerm(self,Sout):
         """
         感度分析結果について，Soutのリストに与える項目の結果を
