@@ -1,5 +1,5 @@
 """
-  UniPlannerデータをAI用に加工する
+  RBMへのAI適用にあたりデータ加工関連処理を行うパッケージ
   Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
 """
 from os.path import dirname, exists, expanduser, isdir, join, splitext
@@ -570,3 +570,109 @@ class DataTreatNew:
             if self.EvalNull(self.df[categ[0]],ratio):
                 cat.remove(categ[0])
         return cat
+class DamageTreat:
+    """
+    Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
+    目的:全損傷モードについて、ラベル化するための管理プログラム
+    Ver. 1.0.2以降追加
+    利用法:
+        下記にてインスタンスを生成する
+        ins=DamageTreat(data,damage)
+    引数:
+        data    DataTreatN::DataTreat()によって加工されたUniPlannerデータの入力データ項目部分
+        damage  DataTreatN::DataTreat()によって加工されたUniPlannerデータの損傷データ部分
+    """
+    def __init__(self,data,damage):
+        self.data=data
+        self.damage=damage
+    def MakeDamage(self):
+        """
+        目的:全損傷データをラベル化するためのデータ加工
+        　　　各入力レコードごとに、損傷モードを番号としてラベル化しtargetに入力する
+           　 番号は、DM***の損傷名に対して***の部分を割り当てる。同一レコードに対して
+              複数の損傷モードが存在するときには、その数だけ入力レコードをコピーし、各
+              損傷モードのラベルをtargetに入力する
+        入力:なし
+        出力:damageNew,dam_list
+              damageNew:  加工後の学習用入力データ
+              dam_list:   加工後のtargetデータ
+        """
+        col=self.damage.columns.values
+        cols=self.data.columns
+        dam_list=[]
+        self.damageNew=pd.DataFrame(index=[], columns=cols)#新たに作り直す学習用データ
+        for i in range(len(self.data)):
+            aa=self.damage.iloc[i]==1
+            dam=col[aa]#損傷名リスト
+            # 損傷モードが0のときには、0として記録しておく
+            if len(dam)==0:
+                self.damageNew=self.damageNew.append(self.data.iloc[i])
+                dam_list.append(0)
+            for j in range(len(dam)):
+                self.damageNew=self.damageNew.append(self.data.iloc[i])
+                nn=int(dam[j].replace('DM',''))
+                dam_list.append(nn)
+        return self.damageNew,dam_list
+    def toJson(self,proba):
+        """
+        目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
+        """
+        df=[]
+        col_lab=proba.columns
+        col_num=len(col_lab)
+        ans_col_lab=self.damage.columns
+        ans_col_num=len(ans_col_lab)
+        for i in range(len(proba)):
+            aa=proba.iloc[i]
+            dd=self.damage.iloc[i]
+            dam=[]
+            prob=[]
+            ans=[]
+            for j in range(col_num):
+                pp=aa[col_lab[j]]
+                if pp != 0.0:
+                    dam.append(col_lab[j])
+                    prob.append(pp)
+            for j in range(ans_col_num):
+                ii=dd[j]
+                if ii==1:
+                    na=ans_col_lab[j]
+                    dt=int(na.replace('DM',''))
+                    ans.append(dt)
+            if len(ans)==0:
+                ans.append(0)
+            t_data= {'record':i,'data':ans,'damage':dam,'probability':prob}
+            df.append(t_data)
+            self.df=df
+        return
+    def GetJson(self):
+        """
+        目的:Jsonデータの取得
+        """
+        return self.df
+    def checkMatch(self,thres):
+        """
+        目的:決定木解析の確率値に基づくマッチング評価
+        入力:
+             thres:  確率値>thresをtrueと判定する
+        出力:
+             cE:     評価結果がtargetの損傷モード内容と完全一致したレコード数
+             cP:     targetの損傷モード内容と完全一致はしないが、包含しているレコード数
+        """
+        #精度検証
+        #thres=0.3# 確率値の打ち切り閾値
+        cE=0
+        cP=0
+        for i in range(len(self.data)):
+            data=self.df[i]['data']
+            damage=self.df[i]['damage']
+            prob=self.df[i]['probability']
+            dam_pick=[]
+            for j in range(len(damage)):
+                if prob[j]>thres:
+                    dam_pick.append(damage[j])
+            if data==dam_pick:
+                cE += 1
+            if data < dam_pick:
+                cP += 1        
+        return cE,cP
