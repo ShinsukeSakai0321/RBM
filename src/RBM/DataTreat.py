@@ -666,6 +666,8 @@ class DamageTreat:
     def checkMatch(self,thres):
         """
         目的:決定木解析の確率値に基づくマッチング評価
+             直前にtoJsonメソッドで実施されたjsonデータに対して
+             適用される
         入力:
              thres:  確率値>thresをtrueと判定する
         出力:
@@ -676,7 +678,7 @@ class DamageTreat:
         #thres=0.3# 確率値の打ち切り閾値
         cE=0
         cP=0
-        for i in range(len(self.data)):
+        for i in range(len(self.df)):
             data=self.df[i]['data']
             damage=self.df[i]['damage']
             prob=self.df[i]['probability']
