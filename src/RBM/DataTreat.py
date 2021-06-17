@@ -279,6 +279,19 @@ class DataTreatN:
         self.rename_term=rename_term
         self.rename_damage=rename_damage
         self.type=type
+    def CutDamage(self,damage,n_thres):
+        """
+        目的:データフレームdamageに記録される損傷モードのうち、
+        　　　記録されるレコード数がn_thres以下の列を削除した
+        　　　データフレームを返す
+        """
+        dam=damage.copy()
+        d_lab=list(dam.columns)
+        for i in range(len(d_lab)):
+            damg=d_lab[i]
+            if dam[damg].sum()<=n_thres:
+                dam=dam.drop(damg,axis=1)
+        return dam
     def num2alpha(self,num):
         """ 数字numのアルファベットへの変換
             num>=26のときはアルファベット2文字となる
@@ -676,16 +689,3 @@ class DamageTreat:
             if data < dam_pick:
                 cP += 1        
         return cE,cP
-    def CutDamage(self,damage,n_thres):
-        """
-        目的:データフレームdamageに記録される損傷モードのうち、
-        　　　記録されるレコード数がn_thres以下の列を削除した
-        　　　データフレームを返す
-        """
-        dam=damage.copy()
-        d_lab=list(dam.columns)
-        for i in range(len(d_lab)):
-            damg=d_lab[i]
-            if dam[damg].sum()<=n_thres:
-                dam=dam.drop(damg,axis=1)
-        return dam
