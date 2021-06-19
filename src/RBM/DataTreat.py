@@ -691,3 +691,52 @@ class DamageTreat:
             if data < dam_pick:
                 cP += 1        
         return cE,cP
+class DamageAnal:
+    """
+    Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
+    目的:　決定木解析結果に対する評価
+    Ver. 1.0.4以降追加
+    """
+    def __init__(self,dtree):
+        self.dtree=dtree
+    def PredictDmode(self,data):
+        tt=self.dtree.predict_proba(data)
+        self.proba=pd.DataFrame(tt)#予測確率値のデータフレーム
+        dam_and_prob=[]
+        col_lab=self.proba.columns
+        col_num=len(col_lab)
+        for i in range(len(data)):
+            aa=self.proba.iloc[i]
+            dam=[] #予測された損傷モード
+            prob=[] #損傷モードの予測確率値
+            for j in range(col_num):
+                pp=aa[col_lab[j]]
+                if pp != 0.0:
+                    dam.append(col_lab[j])
+                    prob.append(pp)
+            t_data= {'record':i,'damage':dam,'probability':prob}
+            dam_and_prob.append(t_data)
+            self.dam_and_prob=dam_and_prob
+        return dam_and_prob
+    def damByProb(self,thres):
+        """
+        目的:決定木解析で得られたレコードごとのラベルに対する確率値をもとに、閾値をthresとして損傷モードを抽出し、Jsonデータとして返す
+        入力:
+            proba   決定木解析の結果得られた確率値データフレーム
+            thres   損傷モードを抽出するための確率値閾値
+        出力:
+            dam_by_prob  抽出された損傷モードのJsonデータ
+        """
+        dam_by_prob=[]
+        for i in range(len(self.dam_and_prob)):
+            prob=self.dam_and_prob[i]['probability']
+            dam=self.dam_and_prob[i]['damage']
+            dam_picked=[]
+            for j in range(len(prob)):
+                pp=prob[j]
+                if pp > 0.0:
+                    dam_picked.append(dam[j])
+            t_data= {'record':i,'damage':dam}
+            dam_by_prob.append(t_data)
+            self.dam_by_prob=dam_by_prob
+        return dam_by_prob
