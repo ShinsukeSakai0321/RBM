@@ -706,6 +706,7 @@ class DamageAnal:
         出力:  dam_and_prob  損傷モードと損傷モード確率からなるJson
                             データ
         """
+        self.data=data
         tt=self.dtree.predict_proba(data)
         self.proba=pd.DataFrame(tt)#予測確率値のデータフレーム
         col_class=self.dtree.classes_ #probaの列名に出てくるクラス名の一覧
@@ -722,6 +723,10 @@ class DamageAnal:
                 if pp != 0.0:
                     dam.append(col_lab[j])
                     prob.append(pp)
+            # 損傷モードなし(ラベル0)を他の損傷モードとともに予測した場合は、ラベル0は削除する
+            if dam[0]==0 and len(dam)>1:
+                dam.pop(0)
+                prob.pop(0)
             t_data= {'record':i,'damage':dam,'probability':prob}
             dam_and_prob.append(t_data)
             self.dam_and_prob=dam_and_prob
@@ -747,3 +752,36 @@ class DamageAnal:
             dam_by_prob.append(t_data)
             self.dam_by_prob=dam_by_prob
         return dam_by_prob
+    def toJson(self,damage):
+        """
+        目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
+        """
+        self.damage=damage
+        df=[]
+        col_lab=self.proba.columns
+        col_num=len(col_lab)
+        ans_col_lab=self.damage.columns
+        ans_col_num=len(ans_col_lab)
+        for i in range(len(self.proba)):
+            aa=self.proba.iloc[i]
+            dd=self.damage.iloc[i]
+            dam=[]
+            prob=[]
+            ans=[]
+            for j in range(col_num):
+                pp=aa[col_lab[j]]
+                if pp != 0.0:
+                    dam.append(col_lab[j])
+                    prob.append(pp)
+            for j in range(ans_col_num):
+                ii=dd[j]
+                if ii==1:
+                    na=ans_col_lab[j]
+                    dt=int(na.replace('DM',''))
+                    ans.append(dt)
+            if len(ans)==0:
+                ans.append(0)
+            t_data= {'record':i,'data':ans,'damage':dam,'probability':prob}
+            df.append(t_data)
+            self.df=df
+        return df
