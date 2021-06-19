@@ -744,11 +744,13 @@ class DamageAnal:
             prob=self.dam_and_prob[i]['probability']
             dam=self.dam_and_prob[i]['damage']
             dam_picked=[]
+            prob_picked=[]
             for j in range(len(prob)):
                 pp=prob[j]
                 if pp > thres:
                     dam_picked.append(dam[j])
-            t_data= {'record':i,'damage':dam_picked}
+                    prob_picked.append(prob[j])
+            t_data= {'record':i,'damage':dam_picked,'probability':prob_picked}
             dam_by_prob.append(t_data)
             self.dam_by_prob=dam_by_prob
         return dam_by_prob
@@ -763,16 +765,10 @@ class DamageAnal:
         ans_col_lab=self.damage.columns
         ans_col_num=len(ans_col_lab)
         for i in range(len(self.proba)):
-            aa=self.proba.iloc[i]
+            dam=self.dam_by_prob[i]['damage']
+            prob=self.dam_by_prob[i]['probability']
             dd=self.damage.iloc[i]
-            dam=[]
-            prob=[]
             ans=[]
-            for j in range(col_num):
-                pp=aa[col_lab[j]]
-                if pp != 0.0:
-                    dam.append(col_lab[j])
-                    prob.append(pp)
             for j in range(ans_col_num):
                 ii=dd[j]
                 if ii==1:
