@@ -702,6 +702,8 @@ class DamageAnal:
     def PredictDmode(self,data):
         tt=self.dtree.predict_proba(data)
         self.proba=pd.DataFrame(tt)#予測確率値のデータフレーム
+        col_class=self.dtree.classes_ #probaの列名に出てくるクラス名の一覧
+        self.proba.columns=col_class #クラス名をその番号に書き換える
         dam_and_prob=[]
         col_lab=self.proba.columns
         col_num=len(col_lab)
