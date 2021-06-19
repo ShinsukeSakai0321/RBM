@@ -618,9 +618,9 @@ class DamageTreat:
             aa=self.damage.iloc[i]==1
             dam=col[aa]#損傷名リスト
             # 損傷モードが0のときには、0として記録しておく
-            if len(dam)==0:
-                self.damageNew=self.damageNew.append(self.data.iloc[i])
-                dam_list.append(0)
+            #if len(dam)==0:
+            #    self.damageNew=self.damageNew.append(self.data.iloc[i])
+            #    dam_list.append(0)
             for j in range(len(dam)):
                 self.damageNew=self.damageNew.append(self.data.iloc[i])
                 nn=int(dam[j].replace('DM',''))
@@ -700,6 +700,12 @@ class DamageAnal:
     def __init__(self,dtree):
         self.dtree=dtree
     def PredictDmode(self,data):
+        """
+        目的:  新規データに対する予測を行い、各レコードの損傷モードとそ　　　　の確率からなるJsonデータを返す
+        入力:  data  予測するための新規データ
+        出力:  dam_and_prob  損傷モードと損傷モード確率からなるJson
+                            データ
+        """
         tt=self.dtree.predict_proba(data)
         self.proba=pd.DataFrame(tt)#予測確率値のデータフレーム
         col_class=self.dtree.classes_ #probaの列名に出てくるクラス名の一覧
@@ -722,12 +728,11 @@ class DamageAnal:
         return dam_and_prob
     def damByProb(self,thres):
         """
-        目的:決定木解析で得られたレコードごとのラベルに対する確率値をもとに、閾値をthresとして損傷モードを抽出し、Jsonデータとして返す
-        入力:
-            proba   決定木解析の結果得られた確率値データフレーム
-            thres   損傷モードを抽出するための確率値閾値
-        出力:
-            dam_by_prob  抽出された損傷モードのJsonデータ
+        目的:  直前にPredictDmodeで評価された各レコードの損傷モード確率
+        　　　　に基づき、閾値をthresとする損傷モードの抽出を行いJson
+        　　　　データとして返す
+        入力:  thres  損傷モード抽出のための確率値の閾値
+        出力:  dam_by_prob  抽出された損傷モードのJsonデータ
         """
         dam_by_prob=[]
         for i in range(len(self.dam_and_prob)):
