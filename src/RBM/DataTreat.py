@@ -736,9 +736,9 @@ class DamageAnal:
             dam_picked=[]
             for j in range(len(prob)):
                 pp=prob[j]
-                if pp > 0.0:
+                if pp > thres:
                     dam_picked.append(dam[j])
-            t_data= {'record':i,'damage':dam}
+            t_data= {'record':i,'damage':dam_picked}
             dam_by_prob.append(t_data)
             self.dam_by_prob=dam_by_prob
         return dam_by_prob
