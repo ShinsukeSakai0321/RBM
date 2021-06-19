@@ -618,9 +618,9 @@ class DamageTreat:
             aa=self.damage.iloc[i]==1
             dam=col[aa]#損傷名リスト
             # 損傷モードが0のときには、0として記録しておく
-            #if len(dam)==0:
-            #    self.damageNew=self.damageNew.append(self.data.iloc[i])
-            #    dam_list.append(0)
+            if len(dam)==0:
+                self.damageNew=self.damageNew.append(self.data.iloc[i])
+                dam_list.append(0)
             for j in range(len(dam)):
                 self.damageNew=self.damageNew.append(self.data.iloc[i])
                 nn=int(dam[j].replace('DM',''))
