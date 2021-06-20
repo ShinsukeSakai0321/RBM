@@ -729,9 +729,9 @@ class DamageAnal:
                 prob.pop(0)
             t_data= {'record':i,'damage':dam,'probability':prob}
             dam_and_prob.append(t_data)
-            self.dam_and_prob=dam_and_prob
+            #self.dam_and_prob=dam_and_prob
         return dam_and_prob
-    def damByProb(self,thres):
+    def damByProb(self,thres,dam_and_prob):
         """
         目的:  直前にPredictDmodeで評価された各レコードの損傷モード確率
         　　　　に基づき、閾値をthresとする損傷モードの抽出を行いJson
@@ -740,9 +740,9 @@ class DamageAnal:
         出力:  dam_by_prob  抽出された損傷モードのJsonデータ
         """
         dam_by_prob=[]
-        for i in range(len(self.dam_and_prob)):
-            prob=self.dam_and_prob[i]['probability']
-            dam=self.dam_and_prob[i]['damage']
+        for i in range(len(dam_and_prob)):
+            prob=dam_and_prob[i]['probability']
+            dam=dam_and_prob[i]['damage']
             dam_picked=[]
             prob_picked=[]
             for j in range(len(prob)):
