@@ -737,6 +737,7 @@ class DamageAnal:
         　　　　に基づき、閾値をthresとする損傷モードの抽出を行いJson
         　　　　データとして返す
         入力:  thres  損傷モード抽出のための確率値の閾値
+               dam_and_prob PredictDmodeの出力
         出力:  dam_by_prob  抽出された損傷モードのJsonデータ
         """
         dam_by_prob=[]
@@ -756,6 +757,9 @@ class DamageAnal:
     def toJson(self,damage,dam_by_prob):
         """
         目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
+        入力: damage   損傷モードを記録するデータフレーム
+              dam_by_prob  damByProbの出力
+        出力: df   record,data,damage,probabilityのJsonデータ
         """
         #self.damage=damage
         df=[]
@@ -780,3 +784,27 @@ class DamageAnal:
             df.append(t_data)
             self.df=df
         return df
+    def checkMatch(self,df):
+        """
+        目的:決定木解析の確率値に基づくマッチング評価
+        入力:
+             df:  toJsonの出力値
+        出力:
+             cE:     評価結果がtargetの損傷モード内容と完全一致したレコード数
+             cP:     targetの損傷モード内容と完全一致はしないが、包含しているレコード数
+        """
+        #精度検証
+        #thres=0.3# 確率値の打ち切り閾値
+        cE=0
+        cP=0
+        for i in range(len(df)):
+            data=df[i]['data']
+            damage=df[i]['damage']
+            prob=df[i]['probability']
+            dam_pick=[]
+
+            if data==damage:
+                cE += 1
+            if data < damage:
+                cP += 1        
+        return cE,cP
