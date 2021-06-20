@@ -752,9 +752,8 @@ class DamageAnal:
                     prob_picked.append(prob[j])
             t_data= {'record':i,'damage':dam_picked,'probability':prob_picked}
             dam_by_prob.append(t_data)
-            self.dam_by_prob=dam_by_prob
         return dam_by_prob
-    def toJson(self,damage):
+    def toJson(self,damage,dam_by_prob):
         """
         目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
         """
@@ -765,8 +764,8 @@ class DamageAnal:
         ans_col_lab=self.damage.columns
         ans_col_num=len(ans_col_lab)
         for i in range(len(self.proba)):
-            dam=self.dam_by_prob[i]['damage']
-            prob=self.dam_by_prob[i]['probability']
+            dam=dam_by_prob[i]['damage']
+            prob=dam_by_prob[i]['probability']
             dd=self.damage.iloc[i]
             ans=[]
             for j in range(ans_col_num):
