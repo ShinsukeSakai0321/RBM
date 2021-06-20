@@ -757,16 +757,16 @@ class DamageAnal:
         """
         目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
         """
-        self.damage=damage
+        #self.damage=damage
         df=[]
         col_lab=self.proba.columns
         col_num=len(col_lab)
-        ans_col_lab=self.damage.columns
+        ans_col_lab=damage.columns
         ans_col_num=len(ans_col_lab)
-        for i in range(len(self.proba)):
+        for i in range(len(damage)):
             dam=dam_by_prob[i]['damage']
             prob=dam_by_prob[i]['probability']
-            dd=self.damage.iloc[i]
+            dd=damage.iloc[i]
             ans=[]
             for j in range(ans_col_num):
                 ii=dd[j]
