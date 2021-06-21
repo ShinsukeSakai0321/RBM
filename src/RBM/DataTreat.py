@@ -626,76 +626,12 @@ class DamageTreat:
                 nn=int(dam[j].replace('DM',''))
                 dam_list.append(nn)
         return self.damageNew,dam_list
-    def toJson(self,proba):
-        """
-        目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
-        """
-        df=[]
-        col_lab=proba.columns
-        col_num=len(col_lab)
-        ans_col_lab=self.damage.columns
-        ans_col_num=len(ans_col_lab)
-        for i in range(len(proba)):
-            aa=proba.iloc[i]
-            dd=self.damage.iloc[i]
-            dam=[]
-            prob=[]
-            ans=[]
-            for j in range(col_num):
-                pp=aa[col_lab[j]]
-                if pp != 0.0:
-                    dam.append(col_lab[j])
-                    prob.append(pp)
-            for j in range(ans_col_num):
-                ii=dd[j]
-                if ii==1:
-                    na=ans_col_lab[j]
-                    dt=int(na.replace('DM',''))
-                    ans.append(dt)
-            if len(ans)==0:
-                ans.append(0)
-            t_data= {'record':i,'data':ans,'damage':dam,'probability':prob}
-            df.append(t_data)
-            self.df=df
-        return
-    def GetJson(self):
-        """
-        目的:Jsonデータの取得
-        """
-        return self.df
-    def checkMatch(self,thres):
-        """
-        目的:決定木解析の確率値に基づくマッチング評価
-             直前にtoJsonメソッドで実施されたjsonデータに対して
-             適用される
-        入力:
-             thres:  確率値>thresをtrueと判定する
-        出力:
-             cE:     評価結果がtargetの損傷モード内容と完全一致したレコード数
-             cP:     targetの損傷モード内容と完全一致はしないが、包含しているレコード数
-        """
-        #精度検証
-        #thres=0.3# 確率値の打ち切り閾値
-        cE=0
-        cP=0
-        for i in range(len(self.df)):
-            data=self.df[i]['data']
-            damage=self.df[i]['damage']
-            prob=self.df[i]['probability']
-            dam_pick=[]
-            for j in range(len(damage)):
-                if prob[j]>thres:
-                    dam_pick.append(damage[j])
-            if data==dam_pick:
-                cE += 1
-            if data < dam_pick:
-                cP += 1        
-        return cE,cP
+
 class DamageAnal:
     """
     Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
     目的:　決定木解析結果に対する評価
-    Ver. 1.0.4以降追加
+    Ver. 1.0.5以降追加
     """
     def __init__(self,dtree):
         self.dtree=dtree
