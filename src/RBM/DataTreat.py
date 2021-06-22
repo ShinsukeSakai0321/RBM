@@ -7,6 +7,7 @@ import pandas as pd
 import numpy as np
 from pandas import DataFrame
 import keras
+from keras.utils import to_categorical
 import datetime
 import dateutil
 from dateutil.relativedelta import relativedelta
@@ -81,7 +82,7 @@ class DataTreatO:
         t_Damage=t_Damage.append(bb)
         ### categorical process
         aa=np.array(data[row_name]) #変更3
-        Damage=DataFrame(data=keras.utils.to_categorical(aa))#変更4
+        Damage=DataFrame(data=to_categorical(aa))#変更4
         for i in range(len(Damage.columns)): ##変更5
             Damage=Damage.rename(columns={i:row_name+self.num2alpha(i+1)})#変更6
         return t_Damage,Damage   
@@ -359,7 +360,7 @@ class DataTreatN:
         t_Damage=t_Damage.append(bb)
         ### categorical process
         aa=np.array(data[row_name]) #変更3
-        Damage=DataFrame(data=keras.utils.to_categorical(aa))#変更4
+        Damage=DataFrame(data=to_categorical(aa))#変更4
         for i in range(len(Damage.columns)): ##変更5
             Damage=Damage.rename(columns={i:row_name+self.num2alpha(i+1)})#変更6
         return t_Damage,Damage   
