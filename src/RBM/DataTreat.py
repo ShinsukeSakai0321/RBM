@@ -222,43 +222,7 @@ class DataTreatO:
             proportion=True)
         graph = pydotplus.graph_from_dot_data(dot_data)
         return graph
-def GetData(plant='T'):
-    """
-    目的:教師用サンプルデータの読み取り
-    入力:
-        sel='A' プラントAデータ
-        sel='B' プラントBデータ
-        sel='T' 全データを結合したもの
-    出力:df,rename_term,rename_damage
-        df              教師用サンプルデータ(DataFrame形式)
-        rename_term     項目名変更テーブル
-        rename_damage   損傷機構名変更テーブル 
-    """
-    base_dir = join(dirname(__file__), 'data/')
-    if plant=='A':
-        data_filename = join(base_dir, 'PlantA_Data.csv')
-        RenameTerm = join(base_dir, 'rename_termA.csv')
-        RenameDamage=join(base_dir, 'rename_damageA.csv')
-    elif plant=='B':
-        data_filename = join(base_dir, 'PlantB_Data.csv')
-        RenameTerm = join(base_dir, 'rename_termB.csv')
-        RenameDamage=join(base_dir, 'rename_damageB.csv')
-    elif plant=='C':
-        data_filename = join(base_dir, 'PlantC_Data.csv')
-        RenameTerm = join(base_dir, 'rename_termC.csv')
-        RenameDamage=join(base_dir, 'rename_damageC.csv')
-    elif plant=='D':
-        data_filename = join(base_dir, 'PlantD_Data.csv')
-        RenameTerm = join(base_dir, 'rename_termD.csv')
-        RenameDamage=join(base_dir, 'rename_damageD.csv')
-    elif plant=='T':
-        data_filename = join(base_dir, 'AI_format_work.csv')
-        RenameTerm = join(base_dir, 'rename_term.csv')
-        RenameDamage=join(base_dir, 'rename_damage.csv')
-    df=pd.read_csv(data_filename)
-    rename_term=pd.read_csv(RenameTerm,header=None,dtype=str)
-    rename_damage=pd.read_csv(RenameDamage,header=None,dtype=str)
-    return df,rename_term,rename_damage
+
 
 class DataTreatN:
     """
