@@ -632,13 +632,15 @@ class DamageAnal:
             dam_and_prob.append(t_data)
             #self.dam_and_prob=dam_and_prob
         return dam_and_prob
-    def damByProb(self,thres,dam_and_prob):
+    def damByProb(self,thres,dam_and_prob,MaxNorm=True):
         """
         目的:  直前にPredictDmodeで評価された各レコードの損傷モード確率
-        　　　　に基づき、閾値をthresとする損傷モードの抽出を行いJson
-        　　　　データとして返す
+            に基づき、閾値をthresとする損傷モードの抽出を行いJson
+            データとして返す
         入力:  thres  損傷モード抽出のための確率値の閾値
-               dam_and_prob PredictDmodeの出力
+            dam_and_prob PredictDmodeの出力
+            MaxNorm  Trueのとき、各レコードの損傷モード確率の最大値で、確率値を基準化する
+            　　　　default値はTrue
         出力:  dam_by_prob  抽出された損傷モードのJsonデータ
         """
         dam_by_prob=[]
@@ -647,6 +649,9 @@ class DamageAnal:
             dam=dam_and_prob[i]['damage']
             dam_picked=[]
             prob_picked=[]
+            if MaxNorm:  #確率値の最大値で基準化
+                p_max=max(prob)
+                prob=prob/p_max
             for j in range(len(prob)):
                 pp=prob[j]
                 if pp > thres:
