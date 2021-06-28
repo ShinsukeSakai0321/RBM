@@ -767,11 +767,14 @@ class GeneralTrain:
         入力:
             data        決定木解析結果の推論エンジンを用い、dataに対する予測を行う
             thres       損傷と判断するための基準化確率値の閾値(Default:0.2)
+        使用self:
+            self.dtree  決定木解析の結果
         結果:
             self.pJson      正解と予測結果を合体したJsonデータ
             self.cE      損傷モードが完全一致した数
             self.cP      損傷モードが包含一致した数
         出力:
+            dam_by_prob  基準化確率値の閾値による抽出された損傷モード
             fullRate     完全一致率
             PartialRate  包含率
         """
@@ -784,7 +787,7 @@ class GeneralTrain:
         num=len(data)
         fullRate=self.cE/num
         partialRate=(self.cE+self.cP)/num
-        return fullRate,partialRate
+        return dam_by_prob,fullRate,partialRate
         #print('完全一致率=',cE/num,'包含率=',(cE+cP)/num)
         #完全一致率= 0.9337899543378996 包含率= 0.984779299847793
     def TrainTest(self,ratio=0.2,thres=0.2,max_depth=50):
