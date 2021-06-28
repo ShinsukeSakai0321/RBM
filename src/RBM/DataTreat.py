@@ -761,14 +761,13 @@ class GeneralTrain:
         max_depth=int(max_depth)
         self.dtree = tree.DecisionTreeClassifier(max_depth=max_depth,random_state=0)
         self.dtree = self.dtree.fit(self.data_new, self.target)
-    def DAnal(self,data,thres=0.2):
+    def DAnal(self,data,dtree,thres=0.2):
         """
         目的:決定木解析結果について、確率値処理のためのデータ加工および精度チェックを行う
         入力:
             data        決定木解析結果の推論エンジンを用い、dataに対する予測を行う
+            dtree  決定木解析の結果
             thres       損傷と判断するための基準化確率値の閾値(Default:0.2)
-        使用self:
-            self.dtree  決定木解析の結果
         結果:
             self.pJson      正解と予測結果を合体したJsonデータ
             self.cE      損傷モードが完全一致した数
@@ -778,7 +777,7 @@ class GeneralTrain:
             fullRate     完全一致率
             PartialRate  包含率
         """
-        da=DamageAnal(self.dtree)#解析用のインスタンス生成                         ######### dt削除のこと
+        da=DamageAnal(dtree)#解析用のインスタンス生成                         ######### dt削除のこと
         dam_and_prob=da.PredictDmode(data)#各レコードの予測損傷モード確率の取り出し
         dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
         self.pJson=da.toJson(self.damage_cut,dam_by_prob)#正解と予測結果を合体したJsonデータ作成 
