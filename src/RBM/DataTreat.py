@@ -714,3 +714,126 @@ class DamageAnal:
             if data < damage:
                 cP += 1        
         return cE,cP
+from sklearn import tree
+class GeneralTrain:
+    """
+    目的:RBMデータのデータ処理から、学習までのプロセスの汎用処理サポート
+    入力:
+        fname:         UniPlannerの入力データ名
+        r_term:        rename_termのファイル名(Default:'rename_term.csv')
+        r_damage:      rename_damageのファイル名(Default:'rename_damage.csv')
+    """
+    def __init__(self,fname,r_term='rename_term.csv',r_damage='rename_damage.csv'):
+        self.df=pd.read_csv(fname)
+        self.rename_term=pd.read_csv(r_term,header=None,dtype=str)
+        self.rename_damage=pd.read_csv(r_damage,header=None,dtype=str)
+    def DataTreat(self,n_thres=10):
+        """
+        目的:RBMデータのデータ処理
+        入力:
+            n_thres:    損傷モードのレコード数の閾値(Default:10)
+        結果:
+            self.damage_cut    閾値以上のレコード数の損傷モードDataFrame
+            self.data_new      学習に用いる入力DataFrame
+            self.target        学習に用いる損傷モードのtarget
+        出力:
+            data        入力データの加工前の学習用データ
+        """
+        #DataTreat処理
+        # インスタンス生成
+        dtoData=dt.DataTreatN(self.df,self.rename_term,self.rename_damage,type='AI_new')
+        # データ加工
+        data,self.t_data,damage=dtoData.DataTreat()#data:学習用に加工された入力データ、damage:損傷データ
+        # 登録されている損傷モードのレコード数がn_thres以下の損傷モードを削除する
+        self.damage_cut=dtoData.CutDamage(damage,n_thres)
+        aa=dt.DamageTreat(data,self.damage_cut)                           #################dt削除のこと
+        self.data_new,self.target=aa.MakeDamage()
+        return data
+    def DecisionTree(self,max_depth=50):
+        """
+        目的:決定木による機械学習
+        入力:
+            max_depth:     決定木解析の深さ(Default:50)
+        結果:
+            self.dtree     決定木解析の結果ファイル
+        """
+
+        max_depth=int(max_depth)
+        self.dtree = tree.DecisionTreeClassifier(max_depth=max_depth,random_state=0)
+        self.dtree = self.dtree.fit(self.data_new, self.target)
+    def DAnal(self,data,thres=0.2):
+        """
+        目的:決定木解析結果について、確率値処理のためのデータ加工および精度チェックを行う
+        入力:
+            data        決定木解析結果の推論エンジンを用い、dataに対する予測を行う
+            thres       損傷と判断するための基準化確率値の閾値(Default:0.2)
+        結果:
+            self.pJson      正解と予測結果を合体したJsonデータ
+            self.cE      損傷モードが完全一致した数
+            self.cP      損傷モードが包含一致した数
+        出力:
+            fullRate     完全一致率
+            PartialRate  包含率
+        """
+        da=DamageAnal(self.dtree)#解析用のインスタンス生成                         ######### dt削除のこと
+        dam_and_prob=da.PredictDmode(data)#各レコードの予測損傷モード確率の取り出し
+        dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
+        self.pJson=da.toJson(self.damage_cut,dam_by_prob)#正解と予測結果を合体したJsonデータ作成 
+        # 一致率のチェック
+        self.cE,self.cP=da.checkMatch(self.pJson)# 一致率のチェック
+        num=len(data)
+        fullRate=self.cE/num
+        partialRate=(self.cE+self.cP)/num
+        return fullRate,partialRate
+        #print('完全一致率=',cE/num,'包含率=',(cE+cP)/num)
+        #完全一致率= 0.9337899543378996 包含率= 0.984779299847793
+    def TrainTest(self,ratio=0.2,thres=0.2,max_depth=50):
+        """
+        目的:RBMデータに対し、過学習のチェックをするたtrain,testに対する検証を行う
+        入力:
+            ratio:         fnameの入力データについてtrain:testの割合を1:ratioにする
+            　　　　　　　　　(Default:0.2)
+            thres:         損傷モード判定のための基準化確率値閾値(Default:0.2)
+            max_depth:     決定木解析の深さ(Default:50)
+        結果:
+            self.dtree     決定木解析の結果ファイル
+        出力:
+            self.dtree     決定木解析の結果ファイル
+        """
+        # 全体データに対する加工処理
+        data=self.DataTreat()
+        #過学習に対する検討
+        # dataとdamage_cutに対して、ratioの割合でtestを切り出し、残りをtrainとする
+        #まずはdataとdamage_cutを合体する
+        df=data.join(self.damage_cut)
+        df_test=df.sample(frac=ratio)#ratioの割合でtestデータの切り出し
+        df_train=df.drop(df_test.index)#残りをtrainとする
+        df_train_data=df_train.drop(self.damage_cut.columns,axis=1)#trainデータ部分の切り出し
+        df_train_damage=df_train.drop(data.columns,axis=1)#train損傷モード部分の切り出し
+        df_test_data=df_test.drop(self.damage_cut.columns,axis=1)#testデータ部分の切り出し
+        df_test_damage=df_test.drop(data.columns,axis=1)#test損傷モード部分の切り出し
+        a_train=DamageTreat(df_train_data,df_train_damage)     #############dt部分削除のこと
+        X_train,y_train=a_train.MakeDamage()
+        # trainに対する決定木解析
+        max_depth=50
+        max_depth=int(max_depth)
+        dtree = tree.DecisionTreeClassifier(max_depth=max_depth,random_state=0)
+        self.dtree = dtree.fit(X_train, y_train)
+        da=DamageAnal(self.dtree)#解析用のインスタンス生成                    dt部分削除のこと
+        #for train data
+        dam_and_prob=da.PredictDmode(df_train_data)#各レコードの予測損傷モード確率の取り出し
+        dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
+        dff=da.toJson(df_train_damage,dam_by_prob)#正解と予測結果を合体したJsonデータ作成
+        cE,cP=da.checkMatch(dff)# 一致率のチェック
+        num=len(df_train_data)
+        print('train:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
+        if ratio!=0:
+            #for test data
+            dam_and_prob=da.PredictDmode(df_test_data)#各レコードの予測損傷モード確率の取り出し
+            dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
+            dff=da.toJson(df_test_damage,dam_by_prob)#正解と予測結果を合体したJsonデータ作成
+            cE,cP=da.checkMatch(dff)# 一致率のチェック
+            num=len(df_test_data)
+            print('test:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
+        #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
+        return self.dtree
