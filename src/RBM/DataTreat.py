@@ -741,7 +741,7 @@ class GeneralTrain:
         """
         #DataTreat処理
         # インスタンス生成
-        dtoData=dt.DataTreatN(self.df,self.rename_term,self.rename_damage,type='AI_new')
+        dtoData=DataTreatN(self.df,self.rename_term,self.rename_damage,type='AI_new')
         # データ加工
         data,self.t_data,damage=dtoData.DataTreat()#data:学習用に加工された入力データ、damage:損傷データ
         # 登録されている損傷モードのレコード数がn_thres以下の損傷モードを削除する
