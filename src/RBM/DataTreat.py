@@ -746,7 +746,7 @@ class GeneralTrain:
         data,self.t_data,damage=dtoData.DataTreat()#data:学習用に加工された入力データ、damage:損傷データ
         # 登録されている損傷モードのレコード数がn_thres以下の損傷モードを削除する
         self.damage_cut=dtoData.CutDamage(damage,n_thres)
-        aa=dt.DamageTreat(data,self.damage_cut)                           #################dt削除のこと
+        aa=DamageTreat(data,self.damage_cut)                           #################dt削除のこと
         self.data_new,self.target=aa.MakeDamage()
         return data
     def DecisionTree(self,max_depth=50):
