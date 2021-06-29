@@ -497,7 +497,7 @@ class DataTreatNew:
         self.t_data=t_data
         self.colData=data.columns#その列名を取得
         #空のデータフレーム
-        self.dataNew = pd.DataFrame(index=[], columns=colData)
+        self.dataNew = pd.DataFrame(index=[], columns=self.colData)
     def rename(self):
         """
         目的:　新規データのcolumnsについて、rename_termに基づくリネーム
@@ -510,7 +510,7 @@ class DataTreatNew:
         # 不要項目の削除
         for i in range(n_term):
             if self.rename_term.iloc[i,2] == '-1':
-                self.df=self.df.drop([rename_term.iloc[i,0]],axis=1)
+                self.df=self.df.drop([self.rename_term.iloc[i,0]],axis=1)
     def DataConvert1(self,dlist):
         """
         目的:　1行分の新規データについて変換後データを戻す
