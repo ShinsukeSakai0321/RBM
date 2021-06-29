@@ -814,6 +814,7 @@ class GeneralTrain:
             self.dtree     決定木解析の結果ファイル
         出力:
             self.dtree     決定木解析の結果ファイル
+            df_train       trainの学習用に用いた入力データ
         """
         # 全体データに対する加工処理
         data=self.DataTreat()
@@ -851,4 +852,4 @@ class GeneralTrain:
             num=len(df_test_data)
             print('test:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
-        return self.dtree
+        return self.dtree,df_train
