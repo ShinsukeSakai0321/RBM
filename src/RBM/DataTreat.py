@@ -479,13 +479,23 @@ class DataTreatNew:
     """
     Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
     目的:　新規データに対するデータ加工
-    Ver. 1.0.1以降追加
+    Ver. 1.1.1以降追加
+    入力:
+        new_file:         新規のUniPlanner入力データファイル名(Default:'df_new_data.csv'),損傷モードデータは含まない
+        rename_term_file: 入力データの項目変換テーブルファイル名(Default:'rename_term.csv')
+        t_data_file:      学習時に吐き出されたt_dataファイル名(Default:'t_data.csv')
+        data_file:        学習時に吐き出されたdataファイル名(Default:'data_train.csv')
     """
-    def __init__(self,df_new,rename_term,t_data,colData):
+    def __init__(self,new_file='df_new_data.csv',rename_term_file='rename_term.csv',
+                 t_data_file='t_data.csv',data_file='data_train.csv'):
+        df_new=pd.read_csv(new_file,index_col=0)#新規データ
+        t_data=pd.read_csv(t_data_file, index_col=0)
+        rename_term=pd.read_csv(rename_term_file,header=None,dtype=str)
+        data=pd.read_csv(data_file,index_col=0)#学習時に作ったdataを読み取る
         self.df=df_new
         self.rename_term=rename_term
         self.t_data=t_data
-        self.colData=colData
+        self.colData=data.columns#その列名を取得
         #空のデータフレーム
         self.dataNew = pd.DataFrame(index=[], columns=colData)
     def rename(self):
@@ -504,6 +514,8 @@ class DataTreatNew:
     def DataConvert1(self,dlist):
         """
         目的:　1行分の新規データについて変換後データを戻す
+        入力:
+            dlist:    一行分データのDataFrame
         """
         dCol=self.df.columns
         num_term=len(dCol)
@@ -527,6 +539,7 @@ class DataTreatNew:
         for i in range(len(self.df)):
             dlist=self.df.iloc[i] #i番目のデータ取得
             self.dataNew=self.dataNew.append(self.DataConvert1(dlist))
+        return self.dataNew
     def GetConvertedData(self):
         """
         目的:　変換後のデータの取得
