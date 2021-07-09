@@ -703,11 +703,13 @@ class DamageAnal:
             df.append(t_data)
             self.df=df
         return df
-    def checkMatch(self,df):
+    def checkMatch(self,df,defThres=0.75):
         """
         目的:決定木解析の確率値に基づくマッチング評価
         入力:
              df:  toJsonの出力値
+             defThres:  包含条件として、(予測-正解)/予測<=defThres
+             　　　　　　とする(Default:0.75) v1.2.2で追加
         出力:
              cE:     評価結果がtargetの損傷モード内容と完全一致したレコード数
              cP:     targetの損傷モード内容と完全一致はしないが、包含しているレコード数
@@ -717,15 +719,18 @@ class DamageAnal:
         cE=0
         cP=0
         for i in range(len(df)):
-            data=df[i]['data']
-            damage=df[i]['damage']
+            data=df[i]['data']#正解
+            damage=df[i]['damage']#予測結果
             prob=df[i]['probability']
             dam_pick=[]
 
             if data==damage:
                 cE += 1
             if data < damage:
-                cP += 1        
+                sabun=list(set(damage)-set(data))#差分のリスト
+                rat=len(sabun)/len(damage)
+                if rat<=defThres:#差分の割合がdefThres以下のとき包含と判定
+                    cP += 1        
         return cE,cP
 from sklearn import tree
 class GeneralTrain:
