@@ -913,6 +913,6 @@ class GeneralTrain:
             #print('test:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
             test_perfect=cE/num
             test_include=(cE+cP)/num
-        res=pd.DataFrame({'train':[train_perfect,train_include],'test':[test_perfect,test_include]})
+        res=pd.DataFrame({'train':[train_perfect,train_include],'test':[test_perfect,test_include]},index=['perfect','include'])
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
         return self.dtree,df_train_data,res
