@@ -243,6 +243,7 @@ class DataTreatN:
         self.df=df
         self.rename_term=rename_term
         self.rename_damage=rename_damage
+    def DataTreat(self,n_thres=10):
         self.type=type
     def CutDamage(self,damage,n_thres):
         """
@@ -872,6 +873,7 @@ class GeneralTrain:
         出力:
             self.dtree     決定木解析の結果ファイル
             df_train       trainの学習用に用いた入力データ
+            t_data         変換テーブル表
             res            完全一致率と包含率の評価結果をtrainとtestについてDataFrameにした結果
         """
         # 全体データに対する加工処理
@@ -915,4 +917,4 @@ class GeneralTrain:
             test_include=(cE+cP)/num
         res=pd.DataFrame({'train':[train_perfect,train_include],'test':[test_perfect,test_include]},index=['完全一致率','包含率'])
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
-        return self.dtree,df_train_data,res
+        return self.dtree,df_train_data,self.t_data,res
