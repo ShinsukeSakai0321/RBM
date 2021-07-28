@@ -735,6 +735,7 @@ class DamageAnal:
     def FinalRes(self,dam_by_prob,dam_name='damage_name.csv'):
         """
         目的:推論により得られたdamage_by_probから、各レコードの損傷モードを確率値つきで、書式を整えて出力する
+        v.1.1.3以降追加
         入力:  dam_by_prob     DamageAnal::damByProbにより処理された結果
             　 dam_name        損傷番号と損傷名の対応を記載したcsvファイル名(default damage_name.csv)
         出力　各レコードについて予測される損傷モードを記載したDataFrame
@@ -763,6 +764,7 @@ class DamageAnal:
     def ResultFrame(self,dam_by_prob,dam_name='damage_name.csv'):
         """
         目的:推論により得られたdamage_by_probから、各レコードの損傷モードテーブルをDataFrameで戻す
+                v.1.1.3以降追加
         入力:  dam_by_prob     DamageAnal::damByProbにより処理された結果
             　 dam_name        損傷番号と損傷名の対応を記載したcsvファイル名(default damage_name.csv)
         出力:　各レコードについて予測される損傷モードに1のフラグを立てたテーブルをDataFrameとしたもの
