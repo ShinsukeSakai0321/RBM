@@ -1,7 +1,7 @@
 from setuptools import setup,find_packages
 setup(
     name="RBM",
-    version="1.1.4",
+    version="1.1.5",
     author="Shinsuke Sakai",
     url="https://github/ShinsukeSakai0321/RBM.git",
     packages=find_packages("src"),
