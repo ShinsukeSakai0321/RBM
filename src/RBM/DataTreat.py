@@ -732,6 +732,56 @@ class DamageAnal:
                 if rat<=defThres:#差分の割合がdefThres以下のとき包含と判定
                     cP += 1        
         return cE,cP
+    def FinalRes(self,dam_by_prob,dam_name='damage_name.csv'):
+        """
+        目的:推論により得られたdamage_by_probから、各レコードの損傷モードを確率値つきで、書式を整えて出力する
+        入力:  dam_by_prob     DamageAnal::damByProbにより処理された結果
+            　 dam_name        損傷番号と損傷名の対応を記載したcsvファイル名(default damage_name.csv)
+        出力　各レコードについて予測される損傷モードを記載したDataFrame
+                出力フォーマットは下記の通り
+                {損傷名1(p1)}{損傷名2(p2)}....
+                .
+                .
+                
+                p1,p2は確率値を示す。ただし、最大値が1となるように基準化している。
+        """
+        damage_name=pd.read_csv(dam_name)
+        drec=[]
+        for i in range(len(dam_by_prob)):
+            dd=dam_by_prob[i]
+            d1=dd['damage']
+            srec=''
+            for j in range(len(d1)):
+                cc=d1[j]
+                if cc==0:
+                    dam='なし'
+                else:
+                    dam=damage_name['damage'][cc-1]
+                srec += '{'+dam +'('+str(dd['probability'][j])+')}'
+            drec.append(srec)
+        return pd.DataFrame({'DamageMode':drec})
+    def ResultFrame(self,dam_by_prob,dam_name='damage_name.csv'):
+        """
+        目的:推論により得られたdamage_by_probから、各レコードの損傷モードテーブルをDataFrameで戻す
+        入力:  dam_by_prob     DamageAnal::damByProbにより処理された結果
+            　 dam_name        損傷番号と損傷名の対応を記載したcsvファイル名(default damage_name.csv)
+        出力:　各レコードについて予測される損傷モードに1のフラグを立てたテーブルをDataFrameとしたもの
+        """
+        damage_name=pd.read_csv(dam_name)
+        nd=len(damage_name)
+        l=[0]*len(dam_by_prob)
+        res=pd.DataFrame()
+        for i in range(nd):
+            col='DM'+str(i+1)
+            res[col]=l
+        for i in range(len(dam_by_prob)):
+            dd=dam_by_prob[i]
+            d1=dd['damage']
+            for j in range(len(d1)):
+                if d1[j]!=0:
+                    dm='DM'+str(d1[j])
+                    res[dm][i]=1
+        return res
 from sklearn import tree
 class GeneralTrain:
     """
