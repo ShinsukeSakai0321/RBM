@@ -243,7 +243,6 @@ class DataTreatN:
         self.df=df
         self.rename_term=rename_term
         self.rename_damage=rename_damage
-    def DataTreat(self,n_thres=10):
         self.type=type
     def CutDamage(self,damage,n_thres):
         """
