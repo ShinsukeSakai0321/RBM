@@ -890,7 +890,6 @@ class GeneralTrain:
         a_train=DamageTreat(df_train_data,df_train_damage)     #############dt部分削除のこと
         X_train,y_train=a_train.MakeDamage()
         # trainに対する決定木解析
-        max_depth=50
         max_depth=int(max_depth)
         dtree = tree.DecisionTreeClassifier(max_depth=max_depth,random_state=0)
         self.dtree = dtree.fit(X_train, y_train)
