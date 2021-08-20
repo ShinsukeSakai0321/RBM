@@ -681,7 +681,7 @@ class DamageAnal:
         出力: df   record,data,damage,probabilityのJsonデータ
         """
         #self.damage=damage
-        df=[]
+        df={}
         col_lab=self.proba.columns
         col_num=len(col_lab)
         ans_col_lab=damage.columns
@@ -699,9 +699,9 @@ class DamageAnal:
                     ans.append(dt)
             if len(ans)==0:
                 ans.append(0)
-            t_data= {'record':i,'data':ans,'damage':dam,'probability':prob}
-            df.append(t_data)
-            self.df=df
+            t_data= {"data":ans,"damage":dam,"probability":prob}
+            df[str(i)]=t_data
+        self.df=df
         return df
     def checkMatch(self,df,defThres=0.75):
         """
