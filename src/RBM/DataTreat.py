@@ -819,6 +819,11 @@ class GeneralTrain:
         aa=DamageTreat(data,self.damage_cut)                           #################dt削除のこと
         self.data_new,self.target=aa.MakeDamage()
         return data
+    def GetDamage(self):
+        """
+        目的:DataTreatの処理後に、n_thres以上の損傷モードが抽出された損傷モードデータを抽出する
+        """
+        return self.damage_cut
     def DecisionTree(self,max_depth=50):
         """
         目的:決定木による機械学習
@@ -859,7 +864,7 @@ class GeneralTrain:
         return dam_by_prob,fullRate,partialRate
         #print('完全一致率=',cE/num,'包含率=',(cE+cP)/num)
         #完全一致率= 0.9337899543378996 包含率= 0.984779299847793
-    def TrainTest(self,ratio=0.2,thres=0.2,max_depth=50):
+    def TrainTest(self,ratio=0.2,thres=0.2,max_depth=50,n_thres=10):
         """
         目的:RBMデータに対し、過学習のチェックをするたtrain,testに対する検証を行う
         入力:
@@ -876,7 +881,7 @@ class GeneralTrain:
             res            完全一致率と包含率の評価結果をtrainとtestについてDataFrameにした結果
         """
         # 全体データに対する加工処理
-        data=self.DataTreat()
+        data=self.DataTreat(n_thres=n_thres)
         #過学習に対する検討
         # dataとdamage_cutに対して、ratioの割合でtestを切り出し、残りをtrainとする
         #まずはdataとdamage_cutを合体する
