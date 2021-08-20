@@ -686,7 +686,7 @@ class DamageAnal:
         col_num=len(col_lab)
         ans_col_lab=damage.columns
         ans_col_num=len(ans_col_lab)
-        for i in range(len(damage)):
+        for i in range(len(dam_by_prob)):
             dam=dam_by_prob[i]['damage']
             prob=dam_by_prob[i]['probability']
             dd=damage.iloc[i]
