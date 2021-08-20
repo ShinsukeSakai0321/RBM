@@ -675,7 +675,7 @@ class DamageAnal:
         return dam_by_prob
     def toJson(self,damage,dam_by_prob):
         """
-        目的:決定木解析で得られたレコードごとのラベルに対する確率値をJson化する
+        目的:決定木解析で得られたレコードごとのラベルに対する確率値を予測損傷モード、正解損傷モードとともにJson化する
         入力: damage   損傷モードを記録するデータフレーム
               dam_by_prob  damByProbの出力
         出力: df   record,data,damage,probabilityのJsonデータ
@@ -702,6 +702,22 @@ class DamageAnal:
             t_data= {"data":ans,"damage":dam,"probability":prob}
             df[str(i)]=t_data
         self.df=df
+        return df
+    def toJson2(self,dam_by_prob):
+        """
+        目的:決定木解析で得られたレコードごとのラベルに対する確率値を予測損傷モードとともにJson化する
+        入力: dam_by_prob  damByProbの出力
+        出力: df   record,damage,probabilityのJsonデータ
+        """
+        #self.damage=damage
+        df={}
+        col_lab=self.proba.columns
+        col_num=len(col_lab)
+        for i in range(len(dam_by_prob)):
+            dam=dam_by_prob[i]['damage']
+            prob=dam_by_prob[i]['probability']
+            t_data= {"damage":dam,"probability":prob}
+            df[str(i)]=t_data
         return df
     def checkMatch(self,df,defThres=0.75):
         """
