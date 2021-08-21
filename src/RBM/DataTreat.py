@@ -898,6 +898,7 @@ class GeneralTrain:
             df_train       trainの学習用に用いた入力データ
             t_data         変換テーブル表
             res            完全一致率と包含率の評価結果をtrainとtestについてDataFrameにした結果
+            dff_train      正解と予測結果を合体したJsonデータ 
         """
         # 全体データに対する加工処理
         data=self.DataTreat(n_thres=n_thres)
@@ -921,8 +922,8 @@ class GeneralTrain:
         #for train data
         dam_and_prob=da.PredictDmode(df_train_data)#各レコードの予測損傷モード確率の取り出し
         dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
-        dff=da.toJson(df_train_damage,dam_by_prob)#正解と予測結果を合体したJsonデータ作成
-        cE,cP=da.checkMatch(dff,defThres=defThres)# 一致率のチェック
+        dff_train=da.toJson(df_train_damage,dam_by_prob)#正解と予測結果を合体したJsonデータ作成
+        cE,cP=da.checkMatch(dff_train,defThres=defThres)# 一致率のチェック
         num=len(df_train_data)
         #print('train:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
         train_perfect=cE/num
@@ -932,11 +933,11 @@ class GeneralTrain:
             dam_and_prob=da.PredictDmode(df_test_data)#各レコードの予測損傷モード確率の取り出し
             dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
             dff=da.toJson(df_test_damage,dam_by_prob)#正解と予測結果を合体したJsonデータ作成
-            cE,cP=da.checkMatch(dff)# 一致率のチェック
+            cE,cP=da.checkMatch(dff,defThres=defThres)# 一致率のチェック
             num=len(df_test_data)
             #print('test:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
             test_perfect=cE/num
             test_include=(cE+cP)/num
         res=pd.DataFrame({'train':[train_perfect,train_include],'test':[test_perfect,test_include]},index=['完全一致率','包含率'])
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
-        return self.dtree,df_train_data,self.t_data,res
+        return self.dtree,df_train_data,self.t_data,res,dff_train
