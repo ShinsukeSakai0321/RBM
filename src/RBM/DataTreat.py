@@ -16,6 +16,7 @@ import pydotplus
 import tkinter as tk
 from IPython.display import clear_output
 from tkinter import messagebox
+import joblib
 import json
 class DataTreatO:
     """
@@ -1064,7 +1065,7 @@ class Train:
             # テキストボックスの値を取得
             clear_output()
 
-            gt=dt.GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
+            gt=GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
             ratio=float(textBox4.get())
             depth=int(textBox5.get())
             n_thres=int(textBox6.get())
@@ -1076,7 +1077,7 @@ class Train:
             data_train.to_csv(textBox_data.get())#吐き出されるdata_train.csvは、新規データ処理の際に使用される
             damage.to_csv(textBox_damage.get(),index=False)
             joblib.dump(dtree, textBox_predict.get())
-            da=dt.DamageAnal(dtree)
+            da=DamageAnal(dtree)
             dam_and_prob=da.PredictDmode(data_train)#各レコードの複数の損傷モードを確率つきで予測        
             with open(textBox_train.get(), 'wt', encoding='utf-8') as f:
                 json.dump(d, f, ensure_ascii=False, cls=NpEncoder)
@@ -1208,11 +1209,11 @@ class Predict:
         def predict():
             # テキストボックスの値を取得
             clear_output()
-            dtn=dt.DataTreatNew(new_file=textBox3.get(),data_file=textBox_data.get())
+            dtn=DataTreatNew(new_file=textBox3.get(),data_file=textBox_data.get())
             #gt=dt.GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
             dtree=joblib.load(textBox_predict.get()) #学習モデルの読み込み
             data_new=dtn.DataConvert()#df_new_data.csvをdata_train.csvのcolumnsに合致するようにデータ変換
-            da=dt.DamageAnal(dtree)#dtreeはdata_train.csvから開発された推論エンジン
+            da=DamageAnal(dtree)#dtreeはdata_train.csvから開発された推論エンジン
             dam_and_prob=da.PredictDmode(data_new)#各レコードの複数の損傷モードを確率つきで予測
             thres=0.2
             dam_by_prob=da.damByProb(thres,dam_and_prob)#最大確率値で基準化、閾値で損傷モードを抽出 
