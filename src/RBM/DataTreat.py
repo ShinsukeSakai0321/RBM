@@ -880,7 +880,7 @@ class GeneralTrain:
         return dam_by_prob,fullRate,partialRate
         #print('完全一致率=',cE/num,'包含率=',(cE+cP)/num)
         #完全一致率= 0.9337899543378996 包含率= 0.984779299847793
-    def TrainTest(self,ratio=0.2,thres=0.2,max_depth=50,n_thres=10):
+    def TrainTest(self,ratio=0.2,thres=0.2,max_depth=50,n_thres=10,defThres=0.75):
         """
         目的:RBMデータに対し、過学習のチェックをするたtrain,testに対する検証を行う
         入力:
@@ -888,6 +888,9 @@ class GeneralTrain:
             　　　　　　　　　(Default:0.2)
             thres:         損傷モード判定のための基準化確率値閾値(Default:0.2)
             max_depth:     決定木解析の深さ(Default:50)
+            n_thres:       記録されるレコード数がn_thres以下の列を削除
+            defThres:  包含条件として、(予測-正解)/予測<=defThres
+             　　　　　　とする(Default:0.75) v1.2.2で追加
         結果:
             self.dtree     決定木解析の結果ファイル
         出力:
@@ -919,7 +922,7 @@ class GeneralTrain:
         dam_and_prob=da.PredictDmode(df_train_data)#各レコードの予測損傷モード確率の取り出し
         dam_by_prob=da.damByProb(thres,dam_and_prob)#確率値の閾値による抽出
         dff=da.toJson(df_train_damage,dam_by_prob)#正解と予測結果を合体したJsonデータ作成
-        cE,cP=da.checkMatch(dff)# 一致率のチェック
+        cE,cP=da.checkMatch(dff,defThres=defThres)# 一致率のチェック
         num=len(df_train_data)
         #print('train:完全一致率=',cE/num,'包含率=',(cE+cP)/num)
         train_perfect=cE/num
