@@ -735,9 +735,9 @@ class DamageAnal:
         cE=0
         cP=0
         for i in range(len(df)):
-            data=df[i]['data']#正解
-            damage=df[i]['damage']#予測結果
-            prob=df[i]['probability']
+            data=df[str(i)]['data']#正解
+            damage=df[str(i)]['damage']#予測結果
+            prob=df[str(i)]['probability']
             dam_pick=[]
 
             if data==damage:
