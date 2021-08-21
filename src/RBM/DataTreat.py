@@ -13,6 +13,10 @@ import dateutil
 from dateutil.relativedelta import relativedelta
 from sklearn import tree
 import pydotplus
+import tkinter as tk
+from IPython.display import clear_output
+from tkinter import messagebox
+import json
 class DataTreatO:
     """
     Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
@@ -941,3 +945,297 @@ class GeneralTrain:
         res=pd.DataFrame({'train':[train_perfect,train_include],'test':[test_perfect,test_include]},index=['完全一致率','包含率'])
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
         return self.dtree,df_train_data,self.t_data,res,dff_train
+class NpEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        if isinstance(obj, np.floating):
+            return float(obj)
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return super(NpEncoder, self).default(obj)
+class Train:
+    def __init__(self):
+        # メインウィンドウを作成
+        baseGround = tk.Tk()
+        # ウィンドウのサイズを設定
+        baseGround.geometry('350x370')
+        # 画面タイトル
+        baseGround.title('学習プロセスの実行')
+
+        # ラベル
+        label_a = tk.Label(text='---入力ファイル名---')
+        label_a.place(x=40, y=10)
+        label_b = tk.Label(text='---出力ファイル名---')
+        label_b.place(x=190, y=10) 
+        
+        label1 = tk.Label(text='入力項目名変更ファイル')
+        label1.place(x=30, y=40)
+
+        label2 = tk.Label(text='損傷モード名変更ファイル')
+        label2.place(x=30, y=100)
+
+        label3 = tk.Label(text='UniPlannerデータファイル')
+        label3.place(x=30, y=160)
+
+        label_cat = tk.Label(text='カテゴリー項目ファイル')
+        label_cat.place(x=180, y=40)
+
+        label_data = tk.Label(text='処理用データファイル')
+        label_data.place(x=180, y=100)
+        
+        label_predict = tk.Label(text='推論エンジン')
+        label_predict.place(x=180, y=160)
+
+        label_damage = tk.Label(text='抽出損傷モード')
+        label_damage.place(x=180, y=220)
+        
+        label_damage = tk.Label(text='学習結果(JSON)')
+        label_damage.place(x=180, y=280)
+        
+        label_ratio = tk.Label(text='ratio')
+        label_ratio.place(x=30,y=220)
+
+        label_depth = tk.Label(text='depth')
+        label_depth.place(x=30,y=260)
+        
+        label_nthres = tk.Label(text='n_thres')
+        label_nthres.place(x=30,y=300)
+        
+        label_thres = tk.Label(text='thres')
+        label_thres.place(x=90,y=220)
+        
+        label_thres = tk.Label(text='defThres')
+        label_thres.place(x=90,y=260)
+
+        # テキストボックス
+        textBox1 = tk.Entry()
+        textBox1.place(x=30, y=60)
+        textBox1.insert(tk.END,"rename_term.csv") 
+
+        textBox2 = tk.Entry()
+        textBox2.place(x=30, y=120)
+        textBox2.insert(tk.END,"rename_damage.csv") 
+
+        textBox3 = tk.Entry()
+        textBox3.place(x=30, y=180)
+        textBox3.insert(tk.END,"AI_format_work.csv") 
+        
+        textBox_cat = tk.Entry()
+        textBox_cat.place(x=180, y=60)
+        textBox_cat.insert(tk.END,"t_data.csv") 
+        
+        textBox_data = tk.Entry()
+        textBox_data.place(x=180, y=120)
+        textBox_data.insert(tk.END,"data_train.csv") 
+        
+        textBox_predict = tk.Entry()
+        textBox_predict.place(x=180, y=180)
+        textBox_predict.insert(tk.END,"dtree.clf")
+        
+        textBox_damage = tk.Entry()
+        textBox_damage.place(x=180, y=240)
+        textBox_damage.insert(tk.END,"damage.csv")
+        
+        textBox_train = tk.Entry()
+        textBox_train.place(x=180, y=300)
+        textBox_train.insert(tk.END,"train_res.json") 
+
+        textBox4=tk.Entry(width=7)
+        textBox4.place(x=30,y=240)
+        textBox4.insert(tk.END,'0.2')
+
+        textBox5=tk.Entry(width=7)
+        textBox5.place(x=30,y=280)
+        textBox5.insert(tk.END,'50')
+        
+        textBox6=tk.Entry(width=7)
+        textBox6.place(x=30,y=320)
+        textBox6.insert(tk.END,'10')
+        
+        textBox_thres=tk.Entry(width=7)
+        textBox_thres.place(x=90,y=240)
+        textBox_thres.insert(tk.END,'0.2')
+        
+        textBox_defThres=tk.Entry(width=7)
+        textBox_defThres.place(x=90,y=280)
+        textBox_defThres.insert(tk.END,'0.75')
+        def train():
+            # テキストボックスの値を取得
+            clear_output()
+
+            gt=dt.GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
+            ratio=float(textBox4.get())
+            depth=int(textBox5.get())
+            n_thres=int(textBox6.get())
+            thres=float(textBox_thres.get())
+            defThres=float(textBox_defThres.get())
+            dtree,data_train,t_data,res,d=gt.TrainTest(ratio=ratio,thres=thres,max_depth=depth,n_thres=n_thres,defThres=defThres)#testの割合を0.2とする
+            damage=gt.GetDamage()
+            t_data.to_csv(textBox_cat.get())#吐き出されるdt_data.csvは、新規データ処理の際に使用される
+            data_train.to_csv(textBox_data.get())#吐き出されるdata_train.csvは、新規データ処理の際に使用される
+            damage.to_csv(textBox_damage.get(),index=False)
+            joblib.dump(dtree, textBox_predict.get())
+            da=dt.DamageAnal(dtree)
+            dam_and_prob=da.PredictDmode(data_train)#各レコードの複数の損傷モードを確率つきで予測        
+            with open(textBox_train.get(), 'wt', encoding='utf-8') as f:
+                json.dump(d, f, ensure_ascii=False, cls=NpEncoder)
+            print(res)
+            label_finish = tk.Label(text='学習終了')
+            label_finish.place(x=180, y=332)
+        # ボタンの作成と配置
+        button = tk.Button(baseGround,
+                        text = '学習の実行',
+                        # クリック時にval()関数を呼ぶ
+                        command = train
+                        ).place(x=100, y=330)
+        def on_closing():
+            if messagebox.askokcancel("Quit", "Do you want to quit?"):
+                baseGround.destroy()
+
+        baseGround.protocol("WM_DELETE_WINDOW", on_closing)
+
+        baseGround.mainloop()
+class Predict:
+    def __init__(self):
+        # メインウィンドウを作成
+        baseGround = tk.Tk()
+        # ウィンドウのサイズを設定
+        baseGround.geometry('350x310')
+        # 画面タイトル
+        baseGround.title('予測プロセスの実行')
+
+        # ラベル
+        label_a = tk.Label(text='---入力ファイル名---')
+        label_a.place(x=40, y=10)
+        label_b = tk.Label(text='---出力ファイル名---')
+        label_b.place(x=190, y=10) 
+        """
+        label1 = tk.Label(text='入力項目名変更ファイル')
+        label1.place(x=30, y=160)
+
+        label2 = tk.Label(text='損傷モード名変更ファイル')
+        label2.place(x=30, y=100)
+        """
+        label3 = tk.Label(text='予測対象データファイル')
+        label3.place(x=30, y=40)
+        """
+        label_cat = tk.Label(text='カテゴリー項目ファイル')
+        label_cat.place(x=30, y=220)
+        """
+        label_data = tk.Label(text='処理用データファイル')
+        label_data.place(x=30, y=100)
+        
+        label_predict = tk.Label(text='推論エンジン')
+        label_predict.place(x=30, y=160)
+        
+        label_dname = tk.Label(text='損傷名ファイル')
+        label_dname.place(x=30, y=220)
+        """
+        label_damage = tk.Label(text='抽出損傷モード')
+        label_damage.place(x=30, y=280)   
+        
+        label_ratio = tk.Label(text='ratio')
+        label_ratio.place(x=50,y=280)
+
+        label_depth = tk.Label(text='depth')
+        label_depth.place(x=100,y=280)
+        """
+        # テキストボックス
+        """
+        textBox1 = tk.Entry()
+        textBox1.place(x=30, y=180)
+        textBox1.insert(tk.END,"rename_term.csv") 
+
+        textBox2 = tk.Entry()
+        textBox2.place(x=30, y=120)
+        textBox2.insert(tk.END,"rename_damage.csv") 
+        """
+        textBox3 = tk.Entry()
+        textBox3.place(x=30, y=60)
+        textBox3.insert(tk.END,"df_new_data.csv") 
+        """
+        textBox_cat = tk.Entry()
+        textBox_cat.place(x=30, y=240)
+        textBox_cat.insert(tk.END,"t_data.csv") 
+        """
+        textBox_data = tk.Entry()
+        textBox_data.place(x=30, y=120)
+        textBox_data.insert(tk.END,"data_train.csv") 
+        
+        textBox_predict = tk.Entry()
+        textBox_predict.place(x=30, y=180)
+        textBox_predict.insert(tk.END,"dtree.clf") 
+        
+        textBox_dname = tk.Entry()
+        textBox_dname.place(x=30, y=240)
+        textBox_dname.insert(tk.END,"damage_name.csv") 
+        """
+        textBox_damage = tk.Entry()
+        textBox_damage.place(x=30, y=300)
+        textBox_damage.insert(tk.END,"damage.csv") 
+        
+        textBox4=tk.Entry(width=7)
+        textBox4.place(x=50,y=300)
+        textBox4.insert(tk.END,'0.2')
+
+        textBox5=tk.Entry(width=7)
+        textBox5.place(x=100,y=300)
+        textBox5.insert(tk.END,'50')
+        """
+        #############################
+        label_fres = tk.Label(text='予測結果')
+        label_fres.place(x=180, y=40)
+        
+        textBox_fres = tk.Entry()
+        textBox_fres.place(x=180, y=60)
+        textBox_fres.insert(tk.END,"final_res.csv") 
+        
+        label_premode = tk.Label(text='予測損傷モード')
+        label_premode.place(x=180, y=100)
+        
+        textBox_premode = tk.Entry()
+        textBox_premode.place(x=180, y=120)
+        textBox_premode.insert(tk.END,"predict_mode.csv") 
+
+        label_json = tk.Label(text='予測結果(JSON)')
+        label_json.place(x=180, y=160)
+        
+        textBox_json = tk.Entry()
+        textBox_json.place(x=180, y=180)
+        textBox_json.insert(tk.END,"predict_res.json") 
+        
+        def predict():
+            # テキストボックスの値を取得
+            clear_output()
+            dtn=dt.DataTreatNew(new_file=textBox3.get(),data_file=textBox_data.get())
+            #gt=dt.GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
+            dtree=joblib.load(textBox_predict.get()) #学習モデルの読み込み
+            data_new=dtn.DataConvert()#df_new_data.csvをdata_train.csvのcolumnsに合致するようにデータ変換
+            da=dt.DamageAnal(dtree)#dtreeはdata_train.csvから開発された推論エンジン
+            dam_and_prob=da.PredictDmode(data_new)#各レコードの複数の損傷モードを確率つきで予測
+            thres=0.2
+            dam_by_prob=da.damByProb(thres,dam_and_prob)#最大確率値で基準化、閾値で損傷モードを抽出 
+            final_res=da.FinalRes( dam_by_prob, dam_name=textBox_dname.get())
+            final_res.to_csv(textBox_fres.get(),encoding='shift-jis')
+            predict_mode=da.ResultFrame(dam_by_prob, dam_name=textBox_dname.get())
+            predict_mode.to_csv(textBox_premode.get())
+            #damage=pd.read_csv(textBox_damage.get())
+            d=da.toJson2(dam_by_prob)            
+            with open(textBox_json.get(), 'wt', encoding='utf-8') as f:
+                json.dump(d, f, ensure_ascii=False, cls=NpEncoder)
+            label_finish = tk.Label(text='予測終了')
+            label_finish.place(x=260, y=238)
+        # ボタンの作成と配置
+        button = tk.Button(baseGround,
+                        text = '予測の実行',
+                        # クリック時にval()関数を呼ぶ
+                        command = predict
+                        ).place(x=180, y=238)
+        def on_closing():
+            if messagebox.askokcancel("Quit", "Do you want to quit?"):
+                baseGround.destroy()
+
+        baseGround.protocol("WM_DELETE_WINDOW", on_closing)
+
+        baseGround.mainloop()
