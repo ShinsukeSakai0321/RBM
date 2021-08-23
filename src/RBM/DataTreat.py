@@ -956,6 +956,10 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         return super(NpEncoder, self).default(obj)
 class Train:
+    """
+    [酒井AIアルゴリズムによるRBM用損傷モード予測エンジンの学習]
+    Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
+    """
     def __init__(self):
         # メインウィンドウを作成
         baseGround = tk.Tk()
@@ -1098,6 +1102,10 @@ class Train:
 
         baseGround.mainloop()
 class Predict:
+    """
+    [酒井AIアルゴリズムによるRBM用損傷モード予測]
+    Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
+    """
     def __init__(self):
         # メインウィンドウを作成
         baseGround = tk.Tk()
@@ -1205,6 +1213,12 @@ class Predict:
         textBox_json = tk.Entry()
         textBox_json.place(x=180, y=180)
         textBox_json.insert(tk.END,"predict_res.json") 
+
+        label_thres = tk.Label(text='thres')
+        label_thres.place(x=180,y=220)
+        textBox_thres=tk.Entry(width=7)
+        textBox_thres.place(x=180,y=240)
+        textBox_thres.insert(tk.END,'0.2')   
         
         def predict():
             # テキストボックスの値を取得
@@ -1215,7 +1229,7 @@ class Predict:
             data_new=dtn.DataConvert()#df_new_data.csvをdata_train.csvのcolumnsに合致するようにデータ変換
             da=DamageAnal(dtree)#dtreeはdata_train.csvから開発された推論エンジン
             dam_and_prob=da.PredictDmode(data_new)#各レコードの複数の損傷モードを確率つきで予測
-            thres=0.2
+            thres=float(textBox_thres.get())
             dam_by_prob=da.damByProb(thres,dam_and_prob)#最大確率値で基準化、閾値で損傷モードを抽出 
             final_res=da.FinalRes( dam_by_prob, dam_name=textBox_dname.get())
             final_res.to_csv(textBox_fres.get(),encoding='shift-jis')
@@ -1226,13 +1240,13 @@ class Predict:
             with open(textBox_json.get(), 'wt', encoding='utf-8') as f:
                 json.dump(d, f, ensure_ascii=False, cls=NpEncoder)
             label_finish = tk.Label(text='予測終了')
-            label_finish.place(x=260, y=238)
+            label_finish.place(x=250, y=248)
         # ボタンの作成と配置
         button = tk.Button(baseGround,
                         text = '予測の実行',
                         # クリック時にval()関数を呼ぶ
                         command = predict
-                        ).place(x=180, y=238)
+                        ).place(x=250, y=218)
         def on_closing():
             if messagebox.askokcancel("Quit", "Do you want to quit?"):
                 baseGround.destroy()
