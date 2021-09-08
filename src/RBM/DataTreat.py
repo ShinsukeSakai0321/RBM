@@ -949,9 +949,11 @@ class GeneralTrain:
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
         return self.dtree,df_train_data,self.t_data,res,dff_train
     def GetTrainTest(self):
-        """学習用に用いたtrainデータとラベルデータをもどす
+        """学習用に用いたtrainデータとラベルデータをDataFrame形式でもどす
         """
-        return self.X_train,self.y_train
+        dd=pd.DataFrame()
+        dd['damage']=self.y_train
+        return self.X_train,dd
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
