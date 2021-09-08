@@ -964,15 +964,11 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         return super(NpEncoder, self).default(obj)
 class Train:
-    """
-    [酒井AIアルゴリズムによるRBM用損傷モード予測エンジンの学習]
-    Copyright © 2021 Shinsuke Sakai, YNU. All Rights Reserved.
-    """
     def __init__(self):
         # メインウィンドウを作成
         baseGround = tk.Tk()
         # ウィンドウのサイズを設定
-        baseGround.geometry('350x370')
+        baseGround.geometry('350x470')
         # 画面タイトル
         baseGround.title('学習プロセスの実行')
 
@@ -1005,6 +1001,12 @@ class Train:
         
         label_damage = tk.Label(text='学習結果(JSON)')
         label_damage.place(x=180, y=280)
+        
+        label_X_train = tk.Label(text='学習用Xデータ')
+        label_X_train.place(x=180, y=340)
+        
+        label_y_train = tk.Label(text='学習用yデータ')
+        label_y_train.place(x=180, y=400)
         
         label_ratio = tk.Label(text='ratio')
         label_ratio.place(x=30,y=220)
@@ -1053,6 +1055,14 @@ class Train:
         textBox_train = tk.Entry()
         textBox_train.place(x=180, y=300)
         textBox_train.insert(tk.END,"train_res.json") 
+        
+        textBox_X_train = tk.Entry()
+        textBox_X_train.place(x=180, y=360)
+        textBox_X_train.insert(tk.END,"X_train.csv") 
+        
+        textBox_y_train = tk.Entry()
+        textBox_y_train.place(x=180, y=420)
+        textBox_y_train.insert(tk.END,"y_train.csv") 
 
         textBox4=tk.Entry(width=7)
         textBox4.place(x=30,y=240)
@@ -1077,7 +1087,7 @@ class Train:
             # テキストボックスの値を取得
             clear_output()
 
-            gt=GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
+            gt=dt.GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
             ratio=float(textBox4.get())
             depth=int(textBox5.get())
             n_thres=int(textBox6.get())
@@ -1088,20 +1098,23 @@ class Train:
             t_data.to_csv(textBox_cat.get())#吐き出されるdt_data.csvは、新規データ処理の際に使用される
             data_train.to_csv(textBox_data.get())#吐き出されるdata_train.csvは、新規データ処理の際に使用される
             damage.to_csv(textBox_damage.get(),index=False)
+            X_train,y_train=gt.GetTrainTest()
+            X_train.to_csv(textBox_X_train.get(),index=False)
+            y_train.to_csv(textBox_y_train.get(),index=False)
             joblib.dump(dtree, textBox_predict.get())
-            da=DamageAnal(dtree)
+            da=dt.DamageAnal(dtree)
             dam_and_prob=da.PredictDmode(data_train)#各レコードの複数の損傷モードを確率つきで予測        
             with open(textBox_train.get(), 'wt', encoding='utf-8') as f:
                 json.dump(d, f, ensure_ascii=False, cls=NpEncoder)
             print(res)
             label_finish = tk.Label(text='学習終了')
-            label_finish.place(x=180, y=332)
+            label_finish.place(x=100, y=382)
         # ボタンの作成と配置
         button = tk.Button(baseGround,
                         text = '学習の実行',
                         # クリック時にval()関数を呼ぶ
                         command = train
-                        ).place(x=100, y=330)
+                        ).place(x=30, y=380)
         def on_closing():
             if messagebox.askokcancel("Quit", "Do you want to quit?"):
                 baseGround.destroy()
