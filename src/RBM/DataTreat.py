@@ -918,7 +918,9 @@ class GeneralTrain:
         df_test_data=df_test.drop(self.damage_cut.columns,axis=1)#testデータ部分の切り出し
         df_test_damage=df_test.drop(data.columns,axis=1)#test損傷モード部分の切り出し
         a_train=DamageTreat(df_train_data,df_train_damage)     #############dt部分削除のこと
-        X_train,y_train=a_train.MakeDamage()
+        X_train,y_train=a_train.MakeDamage() #新方式でのラペル付け処理
+        self.X_train=X_train
+        self.y_train=y_train
         # trainに対する決定木解析
         max_depth=int(max_depth)
         dtree = tree.DecisionTreeClassifier(max_depth=max_depth,random_state=0)
@@ -946,6 +948,10 @@ class GeneralTrain:
         res=pd.DataFrame({'train':[train_perfect,train_include],'test':[test_perfect,test_include]},index=['完全一致率','包含率'])
         #完全一致率= 0.5551330798479087 包含率= 0.752851711026616
         return self.dtree,df_train_data,self.t_data,res,dff_train
+    def GetTrainTest(self):
+        """学習用に用いたtrainデータとラベルデータをもどす
+        """
+        return self.X_train,self.y_train
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
