@@ -1102,7 +1102,7 @@ class Train:
             X_train.to_csv(textBox_X_train.get(),index=False)
             y_train.to_csv(textBox_y_train.get(),index=False)
             joblib.dump(dtree, textBox_predict.get())
-            da=dt.DamageAnal(dtree)
+            da=DamageAnal(dtree)
             dam_and_prob=da.PredictDmode(data_train)#各レコードの複数の損傷モードを確率つきで予測        
             with open(textBox_train.get(), 'wt', encoding='utf-8') as f:
                 json.dump(d, f, ensure_ascii=False, cls=NpEncoder)
