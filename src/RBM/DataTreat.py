@@ -1087,7 +1087,7 @@ class Train:
             # テキストボックスの値を取得
             clear_output()
 
-            gt=dt.GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
+            gt=GeneralTrain(textBox3.get(),r_term=textBox1.get(),r_damage=textBox2.get())#default rename_term.csv,rename_damage.csv
             ratio=float(textBox4.get())
             depth=int(textBox5.get())
             n_thres=int(textBox6.get())
