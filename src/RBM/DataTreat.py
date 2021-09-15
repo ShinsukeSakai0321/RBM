@@ -335,6 +335,8 @@ class DataTreatN:
         return t_Damage,Damage   
     def Numerical_Treat(self,row_name,dff):
         """ 数値項目に対する処理
+            コラム名row_nameの数値データに対して次の処理を行う
+            'Null'データ以外の数値データの平均値uMeanを算出後，'Null'データはuMeanに置き換える．row_nameをコラム名とし，置き換えデータを列データとするデータフレームを戻す．
         """
         num=len(dff)
         aa=np.zeros(num)

@@ -53,11 +53,22 @@ class PreAnal:
         tt_cat.columns=col_cat
         return tt_cat
     def SetNum(self,numeric_features):
+        """dfの数値項目numeric_featuresに対して次の処置を行う
+        　　・欠損値を数値データのmedian値で置き換える
+        　　・平均値，標準偏差で基準化
+        　　・ラベル名nemeric_features，整形データのDataFrameを戻す
+            Pipelineの使い方については次の書籍を参照のこと
+            「scikit-learn,Keras,TensorFlowによる実践機械学習」
+            O'REILLY, 2.5.5 変換パイプライン
+            **注意点**
+            欠損値は，np.NaNであることを前提としている．'Null'などと記載されて
+            いるときには，self.NullNaNconvertを使って事前に変換しておくこと
+        """
         self.numeric_features=numeric_features
         numeric_transformer = Pipeline(steps=[
-            ('imputer', SimpleImputer(strategy='median')),
-            ('scaler', StandardScaler())])    
-        pre_num = ColumnTransformer(
+            ('imputer', SimpleImputer(strategy='median')),#欠損値処理
+            ('scaler', StandardScaler())])#平均値，標準偏差での基準化    
+        pre_num = ColumnTransformer( #numeric_featuresのラベル列のみに適用
             transformers=[
                 ('num', numeric_transformer, numeric_features)])
         clf_num = Pipeline(steps=[('pre_num', pre_num)])
@@ -94,3 +105,9 @@ class PreAnal:
             if self.EvalNull(self.df[categ[0]],ratio):
                 cat.remove(categ[0])
         return cat
+    def NullNaNconvert(self,given_columns):
+        """登録されているself.dfについて，given_columnsで指定されるコラム名のデータのうち，'Null'をNaNに書き換える
+        """
+        dd=self.df[given_columns].replace('Null',np.NaN)
+        self.df=self.df.drop(given_columns,axis=1)
+        self.df=self.df.join(dd)
