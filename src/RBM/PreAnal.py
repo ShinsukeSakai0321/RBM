@@ -81,6 +81,15 @@ class PreAnal:
         return tt_num
     def GetCategTable(self):
         return self.data_cat
+    def TermName(self,features):
+        """featuresで与える入力項目記号リストをカテゴリー名リストに変換して返す
+        """
+        tab=self.GetCategTable()
+        n_term=[]
+        for pp in features:
+            aa=list(tab[tab['index']==pp]['contents'])[0]
+            n_term.append(aa)
+        return n_term
     def Xmake(self,numeric_features,categorical_features):
         """
         数値項目とカテゴリー項目を結合して入力データのDataFrameを戻す
