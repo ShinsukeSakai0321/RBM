@@ -119,7 +119,8 @@ class HL:
             j += 1
             pk1=self.Peak[i]
             p[j]=pk1
-            while j>2:
+            #while j>2:#この修正により完全にレインフロー法と合致2021.9.23
+            while j>3:
                 r1=np.abs(p[j-1]-p[j-2])
                 r2=np.abs(p[j]-p[j-1])
                 if r1>r2:
