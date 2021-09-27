@@ -120,3 +120,23 @@ class PreAnal:
         dd=self.df[given_columns].replace('Null',np.NaN)
         self.df=self.df.drop(given_columns,axis=1)
         self.df=self.df.join(dd)
+    def DataTreatForTest(self,df_test,org_columns,categorical_features):
+        #新規データdf_testのうちカテゴリカル項目についてorg_columnsと、GetCategTable()に従ってカテゴリカル処理する
+        new_data=pd.DataFrame(columns=org_columns)
+        table=self.GetCategTable()        
+        df_categ=df_test[categorical_features]
+
+        for i in range(len(df_test)):
+            d1={}
+            for term in org_columns:
+                d1[term]=0
+            dd=df_categ[i:i+1]
+            col=dd.columns
+            for cat in col:
+                dat=dd[cat][i]
+                picked=table[table["index"].str.startswith(cat)]
+                target=picked[picked['contents']==dat]
+                if len(target)!=0:# train時のカテゴリー項目にない項目のばあいスキップする
+                    d1[target.iloc[0]['index']]=1
+            new_data=new_data.append(d1, ignore_index=True)        
+        return new_data
