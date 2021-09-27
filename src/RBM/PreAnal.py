@@ -72,13 +72,22 @@ class PreAnal:
             transformers=[
                 ('num', numeric_transformer, numeric_features)])
         clf_num = Pipeline(steps=[('pre_num', pre_num)])
-        aa_num=clf_num.fit_transform(self.df)
+        clf=clf_num.fit(self.df)
+        self.clf_fit=clf
+        aa_num=clf.transform(self.df)
         tt_num=pd.DataFrame(aa_num)
         col_num=[]
         for name in zip(numeric_features):
             col_num.append(name[0])
         tt_num.columns=col_num
         return tt_num
+    def GetNumericClf(self):
+        """数値項目について、欠損値処理、平均値・標準偏差基準化処理後のエンジンを戻す
+        　 テストデータに対して処理するときは以下を実行すればよい
+          　　clf_fit=pa.GetNumericClf()
+              X_test_transformed = clf_fit.transform(X_test)
+        """
+        return self.clf_fit
     def GetCategTable(self):
         return self.data_cat
     def TermName(self,features):
