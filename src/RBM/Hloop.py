@@ -125,6 +125,9 @@ class HL:
                 r2=np.abs(p[j]-p[j-1])
                 if r1>r2:
                     break
+                #ASTM E1049-85 (2017)の例題に従い3目のピークの場合除外2021.6.30
+                if i==2:
+                    break
                 r=r1
                 m=(p[j-1]+p[j-2])/2
                 res_r.append(r)
