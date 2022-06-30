@@ -115,7 +115,21 @@ class HL:
         res_r=[]
         res_m=[]
         j=0
-        for i in range(peak_num):
+        p[j]=self.Peak[0]
+        j += 1
+        p[j]=self.Peak[1]
+        r1=np.abs(p[j]-p[j-1])
+        for kk in range(2,peak_num):
+            j += 1
+            pk1=self.Peak[kk]
+            p[j]=pk1
+            r2=np.abs(p[j]-p[j-1])
+            if r2<r1:
+                j -= 1
+                break
+            r1=r2
+            
+        for i in range(kk-1,peak_num):
             j += 1
             pk1=self.Peak[i]
             p[j]=pk1
@@ -124,9 +138,6 @@ class HL:
                 r1=np.abs(p[j-1]-p[j-2])
                 r2=np.abs(p[j]-p[j-1])
                 if r1>r2:
-                    break
-                #ASTM E1049-85 (2017)の例題に従い3目のピークの場合除外2021.6.30
-                if i==3:
                     break
                 r=r1
                 m=(p[j-1]+p[j-2])/2
