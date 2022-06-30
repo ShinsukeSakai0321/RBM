@@ -105,7 +105,7 @@ class HL:
     def hloop(self):
         """
         目的:
-            self.Peakに対してヒステリシスループ法を適用し，半波の情報を戻す
+            self.Peakに対してヒステリシスループ法を適用し，半波の情報を戻す.ver1.2.7が最新
         出力:res_r,res_m
             res_r    半波のレンジのリスト
             res_m    半波の平均値のリスト
