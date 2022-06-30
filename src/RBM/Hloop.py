@@ -126,7 +126,7 @@ class HL:
                 if r1>r2:
                     break
                 #ASTM E1049-85 (2017)の例題に従い3目のピークの場合除外2021.6.30
-                if i==2:
+                if i==3:
                     break
                 r=r1
                 m=(p[j-1]+p[j-2])/2
