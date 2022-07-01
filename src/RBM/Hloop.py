@@ -3,7 +3,7 @@ class HL:
     """
     目的:
         波形データから，ピーク値評価後，レインフロー計数を行う
-        アルゴリズムはヒステリシスループ法によるver1.2.7が最新
+        アルゴリズムはヒステリシスループ法による
     例題:
         hl=HL()
         wave=hl.demo_data()
@@ -115,30 +115,20 @@ class HL:
         res_r=[]
         res_m=[]
         j=0
-        p[j]=self.Peak[0]
-        j += 1
-        p[j]=self.Peak[1]
-        r1=np.abs(p[j]-p[j-1])
-        for kk in range(2,peak_num):
-            j += 1
-            pk1=self.Peak[kk]
-            p[j]=pk1
-            r2=np.abs(p[j]-p[j-1])
-            if r2<r1:
-                j -= 1
-                break
-            r1=r2
             
-        for i in range(kk-1,peak_num):
+        for i in range(peak_num):
             j += 1
             pk1=self.Peak[i]
             p[j]=pk1
             #while j>2:#この修正により完全にレインフロー法と合致2021.9.23
             while j>3:
+                r0=np.abs(p[j-2]-p[j-3]) #追加2022.7.1
                 r1=np.abs(p[j-1]-p[j-2])
                 r2=np.abs(p[j]-p[j-1])
                 if r1>r2:
                     break
+                if r1>r0:#追加2022.7.1
+                    break#追加2022.7.1
                 r=r1
                 m=(p[j-1]+p[j-2])/2
                 res_r.append(r)
